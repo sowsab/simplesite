@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="goMain()">홈으로</button>
+    <h1><span th:text="${dto.reqPostDTO.title}">제목</span></h1>
+    <div>
+    <div>글쓴이: <span th:text="${dto.reqPostDTO.userId}">test</span></div>
+
+    <div>
+        <span th:text="${dto.reqPostDTO.content}">내용</span>
+    </div>
+    <div>글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span></div>
+
+    <h2>덧글</h2>
+    <div>
+        <table border="1">
+            <tr th:each="commentDTO : ${dto.reqPostDTO.resCommentDTOList}">
+                <td th:text="${commentDTO.userId}">글쓴이</td>
+                <td th:text="${commentDTO.content}">내용</td>
+                <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        const goMain = () => {
+            window.location.href = "/";
+        };
+    </script>
+</body>
+</html>

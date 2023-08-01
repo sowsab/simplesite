@@ -1,0 +1,21 @@
+package com.example.simple.model.user.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.simple.model.user.entity.UserEntity;
+import java.util.Optional;
+import java.util.List;
+
+
+
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    
+    Optional<UserEntity> findByIdx(Long idx);
+
+    Optional<UserEntity> findByEmail(String email);
+
+    Optional<UserEntity> findById(String id);
+
+}
