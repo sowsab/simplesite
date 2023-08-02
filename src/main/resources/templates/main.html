@@ -1,32 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
+    <h3 th:if="${session.dto == null}" onclick="goLogin()">로그인</h3>
+    <h3>
+      <span th:if="${session.dto == null}">손님</span>
+      <span
+        th:if="${session.dto != null}"
+        th:text="${session.dto.user.id}"
+      ></span>
+      안녕하세요
+    </h3>
+    <h3 th:if="${session.dto != null}" onclick="goLogout()">로그아웃</h3>
     <h1>게시판</h1>
     <table border="1">
-        <th>게시글 번호</th>
-        <th>게시글 제목</th>
-        <th>글쓴이</th>
-        <tr th:each="postList : ${dto.mainPostDTOList}">
-            <td><span th:text="${postList.idx}"></span></td>
-            <td><span th:onclick="goPost([[${postList.idx}]])" th:text="${postList.title}"></span></td>
-            <td><span th:text="${postList.userId}"></span></td>
-        </tr>
-        
+      <th>게시글 번호</th>
+      <th>게시글 제목</th>
+      <th>글쓴이</th>
+      <tr th:each="postList : ${dto.mainPostDTOList}">
+        <td><span th:text="${postList.idx}"></span></td>
+        <td>
+          <span
+            th:onclick="goPost([[${postList.idx}]])"
+            th:text="${postList.title}"
+          ></span>
+        </td>
+        <td><span th:text="${postList.userId}"></span></td>
+      </tr>
     </table>
 
     <script>
+      const goPost = (idx) => {
+        window.location.href = "post/" + idx;
+      };
 
-        const goPost = (idx) => {
+      const goLogin = () => {
+        window.location.href = "auth/login";
+      };
 
-            window.location.href = "post/" + idx;
-
-        }
-
+      const goLogout = () => {
+        window.location.href = "auth/logout";
+      };
     </script>
-</body>
+  </body>
 </html>

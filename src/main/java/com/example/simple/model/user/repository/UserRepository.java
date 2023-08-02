@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.simple.model.user.entity.UserEntity;
 import java.util.Optional;
-import java.util.List;
 
 
 
