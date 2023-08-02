@@ -58,7 +58,7 @@ public class MainService {
             resCommentDTOList.add(resCommentDTO);
         }
 
-        if (postEntityOptional.isEmpty()) {
+        if (!postEntityOptional.isPresent()) {
             throw new RuntimeException("존재하지 않은 게시물 입니다");
         }
 
