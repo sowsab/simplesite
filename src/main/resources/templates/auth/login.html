@@ -20,6 +20,12 @@
     </div>
 
     <script>
+      document.querySelector("#password").addEventListener("keyup", (event) => {
+        if (event.keyCode === 13) {
+          requestLogin();
+        }
+      });
+
       const checkInput = () => {
         id = document.getElementById("id");
         password = document.getElementById("password");
