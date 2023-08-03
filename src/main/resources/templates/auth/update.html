@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>회원 정보 수정</h1>
+    <div>
+      이메일
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="바꿀 이메일을 입력해주세요"
+      />
+    </div>
+    <div>
+      아이디
+      <input
+        type="text"
+        name="id"
+        id="id"
+        placeholder="바꿀 아이디를 입력해주세요"
+      />
+    </div>
+    <div>
+      비밀번호
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="바꿀 비밀번호를 입력해주세요"
+      />
+    </div>
+    <div>
+      비번확인
+      <input
+        type="password"
+        name="checkPw"
+        id="checkpw"
+        placeholder="아이디의 비밀번호를 입력해주세요"
+      />
+    </div>
+
+    <div><button onclick="reqUpdate()">수정하기</button></div>
+
+    <script th:inline="javascript">
+      const checkInput = () => {
+        email = document.getElementById("email");
+        id = document.getElementById("id");
+        password = document.getElementById("password");
+        checkpw = document.getElementById("checkPw");
+        sesseionpw = "${session.dto.user.id}"
+
+        if (id.value === "" || id.value === null) {
+          alert("아이디를 입력해주세요");
+          return;
+        } else if (password.value === "" || password.value === null) {
+          alert("비밀번호를 입력해주세요");
+          return;
+        } else if (email.value === "" || email.value === null) {
+          alert("이메일을 입력해주세요");
+        } else if (sesseionpw === checkpw) alert("로그인된 비밀번호와 같지 않습니다");
+        return true;
+      };
+
+      const reqUpdate = () => {
+        if (!checkInput()) {
+          return;
+        }
+
+        const dto = {
+          user: {
+            email: document.getElementById("email").value,
+            id: document.getElementById("id").value,
+            password: document.getElementById("password").value,
+            checkPw: document.getElementById("checkpw").value,
+          },
+        };
+
+        fetch("/api/v1/auth/update", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              sessionStorage.clear();
+              location.replace("/auth/login");
+            }
+          });
+      };
+    </script>
+  </body>
+</html>

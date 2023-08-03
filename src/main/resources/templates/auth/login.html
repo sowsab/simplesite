@@ -19,7 +19,15 @@
       <button onclick="requestLogin()">로그인</button>
     </div>
 
+    <div><button onclick="goJoin()">회원가입</button></div>
+
     <script>
+
+      const goJoin = () => {
+        window.location.href = "auth/join";
+      };
+
+
       document.querySelector("#password").addEventListener("keyup", (event) => {
         if (event.keyCode === 13) {
           requestLogin();

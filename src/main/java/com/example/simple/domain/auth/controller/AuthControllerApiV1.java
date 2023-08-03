@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.simple.common.dto.ResponseDTO;
+import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
 import com.example.simple.domain.auth.service.AuthServiceApiV1;
 
@@ -22,5 +24,11 @@ public class AuthControllerApiV1 {
     public ResponseEntity<?> login(@RequestBody ReqLoginDTO reqLoginDTO, HttpSession session) {
         return authServiceApiV1.login(reqLoginDTO, session);
     }
+
+    @PostMapping("/join")
+    public ResponseEntity<ResponseDTO<?>> join(@RequestBody ReqJoinDTO dto) {
+        return authServiceApiV1.join(dto);
+    }
+
     
 }

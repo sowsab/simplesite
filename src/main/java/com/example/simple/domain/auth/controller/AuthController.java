@@ -15,6 +15,18 @@ public class AuthController {
         return "auth/login";
     }
 
+    @GetMapping("/auth/join")
+    public String join(Model model) {
+
+        return "auth/join";
+    }
+
+    @GetMapping("/auth/update")
+    public String update(Model model) {
+
+        return "auth/update";
+    }
+
     @GetMapping("/auth/logout")
     public String logout(HttpSession session) {
 
