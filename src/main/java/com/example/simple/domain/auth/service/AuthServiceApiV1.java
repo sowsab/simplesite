@@ -24,17 +24,6 @@ public class AuthServiceApiV1 {
         @Autowired
         private UserRepository userRepository;
 
-        public ResUpdateDTO getUpdateUser(HttpSession session) {
-                LoginDTO sessionDTO = (LoginDTO) session.getAttribute("dto");
-                
-                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(sessionDTO.getUser().getIdx());
-
-                UserEntity userEntity = userEntityOptional.get();
-
-                return new ResUpdateDTO(userEntity.getId(), userEntity.getEmail());
-
-        }
-
         public ResponseEntity<?> login(ReqLoginDTO dto, HttpSession session) {
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
 

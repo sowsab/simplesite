@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.simple.domain.auth.dto.ResUpdateDTO;
-import com.example.simple.domain.auth.service.AuthServiceApiV1;
+import com.example.simple.domain.auth.service.AuthService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 public class AuthController {
 
     @Autowired
-    private AuthServiceApiV1 authServiceApiV1;
+    private AuthService authService;
 
     @GetMapping("/auth/login")
     public String login(Model model) {
@@ -36,7 +36,7 @@ public class AuthController {
             return "redirect:/";
         }
 
-        ResUpdateDTO dto = authServiceApiV1.getUpdateUser(session);
+        ResUpdateDTO dto = authService.getUpdateUser(session);
 
         model.addAttribute("dto", dto);
 
