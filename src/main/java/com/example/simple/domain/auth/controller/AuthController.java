@@ -1,13 +1,21 @@
 package com.example.simple.domain.auth.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.simple.domain.auth.dto.ResUpdateDTO;
+import com.example.simple.domain.auth.service.AuthServiceApiV1;
+
 import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 public class AuthController {
+
+    @Autowired
+    private AuthServiceApiV1 authServiceApiV1;
 
     @GetMapping("/auth/login")
     public String login(Model model) {
@@ -27,6 +35,10 @@ public class AuthController {
         if (session.getAttribute("dto") == null) {
             return "redirect:/";
         }
+
+        ResUpdateDTO dto = authServiceApiV1.getUpdateUser(session);
+
+        model.addAttribute("dto", dto);
 
         return "auth/update";
     }

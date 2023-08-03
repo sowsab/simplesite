@@ -12,6 +12,7 @@ import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
 import com.example.simple.domain.auth.dto.ReqUpdateDTO;
+import com.example.simple.domain.auth.dto.ResUpdateDTO;
 import com.example.simple.model.user.entity.UserEntity;
 import com.example.simple.model.user.repository.UserRepository;
 
@@ -22,6 +23,17 @@ public class AuthServiceApiV1 {
 
         @Autowired
         private UserRepository userRepository;
+
+        public ResUpdateDTO getUpdateUser(HttpSession session) {
+                LoginDTO sessionDTO = (LoginDTO) session.getAttribute("dto");
+                
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(sessionDTO.getUser().getIdx());
+
+                UserEntity userEntity = userEntityOptional.get();
+
+                return new ResUpdateDTO(userEntity.getId(), userEntity.getEmail());
+
+        }
 
         public ResponseEntity<?> login(ReqLoginDTO dto, HttpSession session) {
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
@@ -138,6 +150,28 @@ public class AuthServiceApiV1 {
                                         ResponseDTO.builder()
                                                         .code(1)
                                                         .message("비밀번호를 확인해주세요")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
+
+                if (userEntityOptional.isPresent()) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("아이디가 중복 되었습니다")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
+
+                if (userEntityOptional.isPresent()) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("이메일이 중복 되었습니다")
                                                         .build(),
                                         HttpStatus.BAD_REQUEST);
                 }
