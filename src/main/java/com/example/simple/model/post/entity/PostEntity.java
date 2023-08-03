@@ -1,8 +1,6 @@
 package com.example.simple.model.post.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 import com.example.simple.model.user.entity.UserEntity;
 
 import jakarta.persistence.Column;

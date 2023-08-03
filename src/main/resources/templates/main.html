@@ -16,6 +16,7 @@
       안녕하세요 <button th:if="${session.dto != null}" onclick="goUpdate()">정보 수정하기</button>
     </h3>
     <h3 th:if="${session.dto != null}" onclick="goLogout()">로그아웃</h3>
+    <button th:if="${session.dto != null}" onclick="goPostWrite()">글쓰기</button>
     <h1>게시판</h1>
     <table border="1">
       <th>게시글 번호</th>
@@ -37,6 +38,11 @@
       const goPost = (idx) => {
         window.location.href = "post/" + idx;
       };
+
+      const goPostWrite = () => {
+        window.location.href = "post-write";
+      };
+
 
       const goLogin = () => {
         window.location.href = "auth/login";

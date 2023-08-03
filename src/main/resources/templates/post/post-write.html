@@ -1,14 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <div><input type="text" name="title" id="title"></div>
-    <div><input type="text" name="post" id="post"></div>
-    <div><button>글쓰기</button></div>
+  </head>
+  <body>
+    <div>제목 <input type="text" name="title" id="title" /></div>
+    <div>내용 <input type="text" name="content" id="content" /></div>
+    <div><button onclick="reqPost()">글쓰기</button></div>
 
-</body>
+    <script>
+      const checkInput = () => {
+        title = document.getElementById("title");
+        content = document.getElementById("content");
+
+        if (title.value === "" || title.value === null) {
+          alert("제목을 입력해주세요");
+          return;
+        } else if (content.value === "" || content.value === null) {
+          alert("내용을 입력해주세요");
+          return;
+        }
+        return true;
+      };
+
+      const reqPost = () => {
+        if (!checkInput()) {
+          return;
+        }
+
+        const dto = {
+          post: {
+            title: document.getElementById("title").value,
+            content: document.getElementById("content").value,
+          },
+        };
+
+        fetch("/api/v1/post/write", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.replace("/");
+            }
+          });
+      };
+    </script>
+  </body>
 </html>

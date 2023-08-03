@@ -1,5 +1,6 @@
 package com.example.simple.domain.auth.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthControllerApiV1 {
+
+    @Autowired
     private final AuthServiceApiV1 authServiceApiV1;
 
     @PostMapping("/login")

@@ -10,6 +10,8 @@ import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.service.MainService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class MainController {
     
@@ -29,6 +31,16 @@ public class MainController {
         model.addAttribute("dto", dto);
 
         return "post/post";
+    }
+
+    @GetMapping("/post-write")
+    private String getPostWrite(Model model, HttpSession session) {
+
+        if (session.getAttribute("dto") == null) {
+            return "redirect:/";
+        }
+
+        return "post/post-write";
     }
 
 }
