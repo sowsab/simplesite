@@ -7,8 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.domain.main.dto.MainPostDTO;
+import com.example.simple.domain.main.dto.ReqGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ReqPostDTO;
+import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.dto.ReqPostDTO.ResCommentDTO;
@@ -16,6 +19,8 @@ import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
 import com.example.simple.model.post.repository.PostRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class MainService {
@@ -67,6 +72,25 @@ public class MainService {
                 postEntityOptional.get().getCreateDate(), resCommentDTOList);
 
         return new ResPostDTO(reqPostDTO);
+
+    }
+
+    public ResGetPostUpdateDTO getPostUpdateData(Long postIdx, HttpSession session) {
+
+        LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+        Optional<PostEntity> postEntityOptional = postRepository.findByIdx(postIdx);
+
+        PostEntity postEntity = postEntityOptional.get();
+
+        if (!loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
+            throw new RuntimeException("작성한 게시자가 아닙니다");
+        }
+
+        ReqGetPostUpdateDTO reqGetPostUpdateData = new ReqGetPostUpdateDTO(postEntity.getTitle(), postEntity.getContent());
+
+        return new ResGetPostUpdateDTO(reqGetPostUpdateData);
+
 
     }
 

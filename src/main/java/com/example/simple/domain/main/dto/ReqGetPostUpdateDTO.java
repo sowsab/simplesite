@@ -1,4 +1,4 @@
-package com.example.simple.domain.auth.dto;
+package com.example.simple.domain.main.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ResUpdateDTO {
-    private String id;
-    private String email;
+public class ReqGetPostUpdateDTO {
+    
+    private String title;
+    private String content;
+
 }

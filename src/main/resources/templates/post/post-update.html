@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>제목 <input th:value="${dto.post.title}" type="text" name="title" id="title" /></div>
+    <div>내용 <input th:value="${dto.post.content}" type="text" name="content" id="content" /></div>
+    <div><button onclick="reqPost()">글쓰기</button></div>
+</body>
+</html>

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.service.MainService;
@@ -31,6 +32,15 @@ public class MainController {
         model.addAttribute("dto", dto);
 
         return "post/post";
+    }
+
+    @GetMapping("/post/update/{postIdx}")
+    public String getUpdatePostPage(Model model, @PathVariable Long postIdx, HttpSession session) {
+        ResGetPostUpdateDTO dto = mainService.getPostUpdateData(postIdx, session);
+
+        model.addAttribute("dto", dto);
+
+        return "post/post-update";
     }
 
     @GetMapping("/post-write")
