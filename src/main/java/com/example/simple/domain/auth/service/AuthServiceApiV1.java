@@ -12,7 +12,6 @@ import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
 import com.example.simple.domain.auth.dto.ReqUpdateDTO;
-import com.example.simple.domain.auth.dto.ResUpdateDTO;
 import com.example.simple.model.user.entity.UserEntity;
 import com.example.simple.model.user.repository.UserRepository;
 
