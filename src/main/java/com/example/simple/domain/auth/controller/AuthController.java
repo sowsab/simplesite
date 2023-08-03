@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.simple.domain.auth.dto.ResUpdateDTO;
+import com.example.simple.domain.auth.dto.ResGetUpdateDTO;
 import com.example.simple.domain.auth.service.AuthService;
 
 import jakarta.servlet.http.HttpSession;
@@ -36,7 +36,7 @@ public class AuthController {
             return "redirect:/";
         }
 
-        ResUpdateDTO dto = authService.getUpdateUser(session);
+        ResGetUpdateDTO dto = authService.getUpdateUser(session);
 
         model.addAttribute("dto", dto);
 
