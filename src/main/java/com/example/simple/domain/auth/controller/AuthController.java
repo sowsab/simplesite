@@ -22,7 +22,11 @@ public class AuthController {
     }
 
     @GetMapping("/auth/update")
-    public String update(Model model) {
+    public String update(Model model, HttpSession session) {
+
+        if (session.getAttribute("dto") == null) {
+            return "redirect:/";
+        }
 
         return "auth/update";
     }

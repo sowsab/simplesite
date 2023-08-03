@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
+import com.example.simple.domain.auth.dto.ReqUpdateDTO;
 import com.example.simple.domain.auth.service.AuthServiceApiV1;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +29,12 @@ public class AuthControllerApiV1 {
     @PostMapping("/join")
     public ResponseEntity<ResponseDTO<?>> join(@RequestBody ReqJoinDTO dto) {
         return authServiceApiV1.join(dto);
+    }
+
+    @PostMapping("/update")
+    private ResponseEntity<ResponseDTO<?>> update(@RequestBody ReqUpdateDTO dto, HttpSession session) {
+
+        return authServiceApiV1.update(dto, session);
     }
 
     

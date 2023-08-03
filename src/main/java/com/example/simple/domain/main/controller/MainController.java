@@ -28,7 +28,7 @@ public class MainController {
         ResPostDTO dto = mainService.getPostData(postIdx);
         model.addAttribute("dto", dto);
 
-        return "post";
+        return "post/post";
     }
 
 }

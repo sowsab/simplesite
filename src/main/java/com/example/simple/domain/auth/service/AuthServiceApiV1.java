@@ -118,7 +118,47 @@ public class AuthServiceApiV1 {
                                 HttpStatus.OK);
         }
 
+        public ResponseEntity<ResponseDTO<?>> update(ReqUpdateDTO dto, HttpSession session) {
 
+                LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+                if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
+                dto.getUser().getId() == "" || dto.getUser().getId() == null ||
+                dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("회원정보를 확인해주세요")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                if (!dto.getUser().getCheckPw().equals(loginDTO.getUser().getPassword())) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("비밀번호를 확인해주세요")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                UserEntity userEntity = UserEntity.builder()
+                .idx(loginDTO.getUser().getIdx())
+                .id(dto.getUser().getId())
+                .email(dto.getUser().getEmail())
+                .password(dto.getUser().getPassword())
+                .build();
+
+                userRepository.save(userEntity);
+                
+                return new ResponseEntity<>(
+                                ResponseDTO.builder()
+                                                .code(0)
+                                                .message("회원정보 수정에 성공했습니다")
+                                                .build(),
+                                HttpStatus.OK);
+
+        }
         
 
 
