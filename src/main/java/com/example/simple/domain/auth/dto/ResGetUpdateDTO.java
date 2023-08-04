@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ResGetUpdateDTO {
 
-    private ReqGetUpdateDataDTO user;
+    private ReqGetUpdateDataDTO reqGetUpdateDataDTO;
 
     @NoArgsConstructor
     @AllArgsConstructor

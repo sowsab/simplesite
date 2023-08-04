@@ -67,7 +67,7 @@ public class MainService {
             throw new RuntimeException("존재하지 않은 게시물 입니다");
         }
 
-        ReqPostDTO reqPostDTO = new ReqPostDTO(postEntityOptional.get().getTitle(),
+        ReqPostDTO reqPostDTO = new ReqPostDTO(postEntityOptional.get().getIdx(), postEntityOptional.get().getTitle(),
                 postEntityOptional.get().getContent(), postEntityOptional.get().getUserEntity().getId(),
                 postEntityOptional.get().getCreateDate(), resCommentDTOList);
 

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ReqPostDTO {
 
+    private Long idx;
     private String title;
     private String content;
     private String userId;

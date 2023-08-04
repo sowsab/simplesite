@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ResGetPostUpdateDTO {
  
-    private ReqGetPostUpdateDTO post;
+    private ReqGetPostUpdateDTO reqGetPostUpdateDTO;
 
 }
