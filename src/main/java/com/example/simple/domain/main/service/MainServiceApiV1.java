@@ -57,7 +57,7 @@ public class MainServiceApiV1 {
                                                 .build(),
                                 HttpStatus.OK);
         }
-        
+
         public ResponseEntity<ResponseDTO<?>> postUpdate(ReqPostUpdateDTO dto, HttpSession session) {
 
                 Optional<PostEntity> postEntityOptional = postRepository.findByIdx(dto.getPost().getIdx());
@@ -95,12 +95,12 @@ public class MainServiceApiV1 {
                 }
 
                 PostEntity updateEntity = PostEntity.builder()
-                .idx(postEntity.getIdx())
-                .title(dto.getPost().getTitle())
-                .content(dto.getPost().getContent())
-                .createDate(postEntity.getCreateDate())
-                .updateDate(LocalDateTime.now())
-                .build();
+                                .idx(postEntity.getIdx())
+                                .title(dto.getPost().getTitle())
+                                .content(dto.getPost().getContent())
+                                .createDate(postEntity.getCreateDate())
+                                .updateDate(LocalDateTime.now())
+                                .build();
 
                 postRepository.save(updateEntity);
 
@@ -114,7 +114,8 @@ public class MainServiceApiV1 {
 
         public ResponseEntity<ResponseDTO<?>> deletePost(ReqDeletePostDTO dto, HttpSession session) {
 
-                Optional<PostEntity> postEntityOptional = postRepository.findByIdxAndDeleteDateIsNull(dto.getPost().getIdx());
+                Optional<PostEntity> postEntityOptional = postRepository
+                                .findByIdxAndDeleteDateIsNull(dto.getPost().getIdx());
 
                 if (!postEntityOptional.isPresent()) {
                         return new ResponseEntity<>(
@@ -129,7 +130,8 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
-                if (!postEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
+                if (loginDTO == null || loginDTO.getUser() == null
+                                || !loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
                         return new ResponseEntity<>(
                                         ResponseDTO.builder()
                                                         .code(1)
