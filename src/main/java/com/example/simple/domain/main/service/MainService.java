@@ -79,7 +79,16 @@ public class MainService {
 
         LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+        if (loginDTO == null) {
+            throw new RuntimeException("로그인 정보가 없습니다");
+            
+        }
+
         Optional<PostEntity> postEntityOptional = postRepository.findByIdx(postIdx);
+
+        if (postEntityOptional.isEmpty()) {
+            throw new RuntimeException("해당 게시물을 찾을 수 없습니다");
+        }
 
         PostEntity postEntity = postEntityOptional.get();
 
@@ -87,7 +96,7 @@ public class MainService {
             throw new RuntimeException("작성한 게시자가 아닙니다");
         }
 
-        ReqGetPostUpdateDTO reqGetPostUpdateData = new ReqGetPostUpdateDTO(postEntity.getTitle(), postEntity.getContent());
+        ReqGetPostUpdateDTO reqGetPostUpdateData = new ReqGetPostUpdateDTO(postEntity.getTitle(), postEntity.getContent(), postEntity.getIdx());
 
         return new ResGetPostUpdateDTO(reqGetPostUpdateData);
 

@@ -16,7 +16,7 @@
     </div>
     <div>글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span></div>
 
-    <div><button>게시글 수정</button></div>
+    <div><button th:onclick="goUpdate([[${dto.reqPostDTO.idx}]])">게시글 수정</button></div>
 
     <h2>덧글</h2>
 

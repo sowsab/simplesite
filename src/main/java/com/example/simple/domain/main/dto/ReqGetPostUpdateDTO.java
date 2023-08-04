@@ -11,5 +11,6 @@ public class ReqGetPostUpdateDTO {
     
     private String title;
     private String content;
+    private Long userIdx;
 
 }
