@@ -81,7 +81,7 @@ public class MainService {
 
         if (loginDTO == null) {
             throw new RuntimeException("로그인 정보가 없습니다");
-            
+
         }
 
         Optional<PostEntity> postEntityOptional = postRepository.findByIdx(postIdx);
@@ -96,10 +96,10 @@ public class MainService {
             throw new RuntimeException("작성한 게시자가 아닙니다");
         }
 
-        ReqGetPostUpdateDTO reqGetPostUpdateData = new ReqGetPostUpdateDTO(postEntity.getTitle(), postEntity.getContent(), postEntity.getIdx());
+        ReqGetPostUpdateDTO reqGetPostUpdateData = new ReqGetPostUpdateDTO(postEntity.getIdx(), postEntity.getTitle(),
+                postEntity.getContent(), postEntity.getIdx());
 
         return new ResGetPostUpdateDTO(reqGetPostUpdateData);
-
 
     }
 

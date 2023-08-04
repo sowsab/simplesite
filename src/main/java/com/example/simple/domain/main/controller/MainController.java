@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
@@ -44,7 +43,7 @@ public class MainController {
         } catch (RuntimeException e) {
             // 서비스 레이어에서 로그인 정보가 없을 때 처리할 내용을 여기에 추가
             // 예를 들어, 에러 페이지로 리다이렉트하거나 적절한 오류 메시지를 띄우는 등의 처리를 할 수 있습니다.
-            return "redirect:/post/{postIdx}"; // 에러 페이지 URL로 변경해야 합니다.
+            return "redirect:/post/{postIdx}";
         }
     }
 

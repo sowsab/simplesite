@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ReqGetPostUpdateDTO {
     
+    private Long idx;
     private String title;
     private String content;
     private Long userIdx;

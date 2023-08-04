@@ -34,8 +34,8 @@ CREATE TABLE `comment` (
   `update_date` timestamp NULL DEFAULT NULL,
   `delete_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`idx`),
-  KEY `comment_FK` (`post_idx`),
   KEY `comment_FK_1` (`user_idx`),
-  CONSTRAINT `comment_FK` FOREIGN KEY (`post_idx`) REFERENCES `post` (`idx`),
+  KEY `comment_FK` (`post_idx`),
+  CONSTRAINT `comment_FK` FOREIGN KEY (`post_idx`) REFERENCES `post` (`idx`) ON DELETE CASCADE,
   CONSTRAINT `comment_FK_1` FOREIGN KEY (`user_idx`) REFERENCES `user` (`idx`)
 );

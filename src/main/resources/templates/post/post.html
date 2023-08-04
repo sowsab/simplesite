@@ -17,6 +17,7 @@
     <div>글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span></div>
 
     <div><button th:onclick="goUpdate([[${dto.reqPostDTO.idx}]])">게시글 수정</button></div>
+    <div><button th:onclick="postDelete([[${dto.reqPostDTO.idx}]])">게시글 삭제</button></div>
 
     <h2>덧글</h2>
 
@@ -32,7 +33,35 @@
         </table>
     </div>
 
-    <script>
+    <script th:inline="javascript">
+
+        const postDelete = (idx) => {
+
+            const dto = {
+
+                post: {
+                    idx: idx,
+                },
+            
+            
+            };
+
+            fetch("/api/v1/post/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify(dto),
+            })
+            .then((response) => response.json())
+            .then((result) => {
+                alert(result.message);
+
+                if (result.code === 0) {
+                location.replace("/");
+                }
+            });
+        };
 
         const goUpdate = (idx) => {
             window.location.href = "/post/update/" + idx;
