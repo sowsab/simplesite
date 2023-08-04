@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
@@ -24,6 +25,11 @@ public class MainController {
         ResMainPostDTO dto = mainService.getPostListData();
         model.addAttribute("dto", dto);
         return "main";
+    }
+
+    @RequestMapping("/**")
+    public String redirectToRoot() {
+        return "redirect:/";
     }
 
     @GetMapping("/post/{postIdx}")
