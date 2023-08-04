@@ -28,8 +28,12 @@ public class MainController {
 
     @GetMapping("/post/{postIdx}")
     public String getPostPage(Model model, @PathVariable Long postIdx) {
-        ResPostDTO dto = mainService.getPostData(postIdx);
-        model.addAttribute("dto", dto);
+        try {
+            ResPostDTO dto = mainService.getPostData(postIdx);
+            model.addAttribute("dto", dto);
+        } catch (Exception e) {
+             return "redirect:/";
+        }
 
         return "post/post";
     }
