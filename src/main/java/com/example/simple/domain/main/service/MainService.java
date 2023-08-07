@@ -3,6 +3,7 @@ package com.example.simple.domain.main.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -35,14 +36,20 @@ public class MainService {
 
         List<PostEntity> postEntityList = postRepository.findByDeleteDateIsNull();
 
-        List<MainPostDTO> mainPostDTOList = new ArrayList<>();
+        // List<MainPostDTO> mainPostDTOList = new ArrayList<>();
 
-        for (PostEntity postEntity : postEntityList) {
-            MainPostDTO mainPostDTO = new MainPostDTO(postEntity.getIdx(), postEntity.getTitle(),
-                    postEntity.getUserEntity().getId());
+        // for (PostEntity postEntity : postEntityList) {
+        // MainPostDTO mainPostDTO = new MainPostDTO(postEntity.getIdx(),
+        // postEntity.getTitle(),
+        // postEntity.getUserEntity().getId());
 
-            mainPostDTOList.add(mainPostDTO);
-        }
+        // mainPostDTOList.add(mainPostDTO);
+        // }
+
+        List<MainPostDTO> mainPostDTOList = postEntityList.stream()
+                .map(postEntity -> new MainPostDTO(postEntity.getIdx(), postEntity.getTitle(),
+                        postEntity.getUserEntity().getId()))
+                .toList();
 
         return new ResMainPostDTO(mainPostDTOList);
 
@@ -54,15 +61,20 @@ public class MainService {
 
         List<CommentEntity> commentEntityList = commentRepository.findByPostEntity_Idx(postIdx);
 
-        List<ResCommentDTO> resCommentDTOList = new ArrayList<>();
+        // List<ResCommentDTO> resCommentDTOList = new ArrayList<>();
 
-        for (CommentEntity commentEntity : commentEntityList) {
-            ResCommentDTO resCommentDTO = new ResCommentDTO(commentEntity.getIdx(),
-                    commentEntity.getUserEntity().getId(),
-                    commentEntity.getContent(), commentEntity.getCreateDate());
+        // for (CommentEntity commentEntity : commentEntityList) {
+        // ResCommentDTO resCommentDTO = new ResCommentDTO(commentEntity.getIdx(),
+        // commentEntity.getUserEntity().getId(),
+        // commentEntity.getContent(), commentEntity.getCreateDate());
 
-            resCommentDTOList.add(resCommentDTO);
-        }
+        // resCommentDTOList.add(resCommentDTO);
+        // }
+
+        List<ResCommentDTO> resCommentDTOList = commentEntityList.stream()
+                .map(commentEntity -> new ResCommentDTO(commentEntity.getIdx(), commentEntity.getUserEntity().getId(),
+                        commentEntity.getContent(), commentEntity.getCreateDate()))
+                .toList();
 
         if (!postEntityOptional.isPresent()) {
             throw new RuntimeException("존재하지 않은 게시물 입니다");
