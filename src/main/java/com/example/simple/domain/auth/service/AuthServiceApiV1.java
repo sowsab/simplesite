@@ -142,27 +142,31 @@ public class AuthServiceApiV1 {
                                         HttpStatus.BAD_REQUEST);
                 }
 
-                Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
-
-                if (userEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("아이디가 중복 되었습니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
-                }
-
-                userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
-
-                if (userEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("이메일이 중복 되었습니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
-                }
+                if (!dto.getUser().getId().equals(loginDTO.getUser().getId())) {
+                        Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
+                
+                        if (userEntityOptional.isPresent()) {
+                            return new ResponseEntity<>(
+                                    ResponseDTO.builder()
+                                            .code(1)
+                                            .message("아이디가 중복 되었습니다")
+                                            .build(),
+                                    HttpStatus.BAD_REQUEST);
+                        }
+                    }
+                
+                    if (!dto.getUser().getEmail().equals(loginDTO.getUser().getEmail())) {
+                        Optional<UserEntity> userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
+                
+                        if (userEntityOptional.isPresent()) {
+                            return new ResponseEntity<>(
+                                    ResponseDTO.builder()
+                                            .code(1)
+                                            .message("이메일이 중복 되었습니다")
+                                            .build(),
+                                    HttpStatus.BAD_REQUEST);
+                        }
+                    }
 
                 UserEntity userEntity = UserEntity.builder()
                 .idx(loginDTO.getUser().getIdx())
