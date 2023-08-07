@@ -1,6 +1,5 @@
 package com.example.simple.domain.main.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +13,13 @@ import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.service.MainService;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
-    @Autowired
-    private MainService mainService;
+    private final MainService mainService;
 
     @GetMapping("/")
     public String getMainPage(Model model) {
