@@ -70,7 +70,7 @@ public class MainService {
 
         List<ResCommentDTO> resCommentDTOList = commentEntityList.stream()
                 .map(commentEntity -> new ResCommentDTO(commentEntity.getIdx(), commentEntity.getUserEntity().getId(),
-                        commentEntity.getContent(), commentEntity.getCreateDate()))
+                        commentEntity.getContent(), commentEntity.getCreateDate(), commentEntity.getUpdateDate()))
                 .toList();
 
         if (!postEntityOptional.isPresent()) {

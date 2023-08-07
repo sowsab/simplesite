@@ -32,6 +32,7 @@ public class ReqPostDTO {
         private String userId;
         private String content;
         private LocalDateTime createDate;
+        private LocalDateTime updateDate;
 
     }
 
