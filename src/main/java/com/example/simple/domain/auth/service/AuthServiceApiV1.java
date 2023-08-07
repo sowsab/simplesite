@@ -2,7 +2,6 @@ package com.example.simple.domain.auth.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,13 @@ import com.example.simple.model.user.entity.UserEntity;
 import com.example.simple.model.user.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceApiV1 {
 
-        @Autowired
-        private UserRepository userRepository;
+        private final UserRepository userRepository;
 
         public ResponseEntity<?> login(ReqLoginDTO dto, HttpSession session) {
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
