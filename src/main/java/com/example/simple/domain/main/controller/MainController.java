@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO;
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
@@ -16,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
-    
+
     @Autowired
     private MainService mainService;
 
@@ -38,7 +39,7 @@ public class MainController {
             ResPostDTO dto = mainService.getPostData(postIdx);
             model.addAttribute("dto", dto);
         } catch (Exception e) {
-             return "redirect:/";
+            return "redirect:/";
         }
 
         return "post/post";
@@ -65,6 +66,18 @@ public class MainController {
         }
 
         return "post/post-write";
+    }
+
+    @GetMapping("/post/comment/{commentIdx}")
+    public String getUpdateCommentPage(Model model, @PathVariable Long commentIdx, HttpSession session) {
+        try {
+            ResGetCommentUpdateDataDTO dto = mainService.getCommentUpdateData(commentIdx, session);
+            model.addAttribute("dto", dto);
+            return "/post/comment-update";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
+
     }
 
 }

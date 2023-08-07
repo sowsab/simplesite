@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.domain.main.dto.ReqCommentDeleteDTO;
+import com.example.simple.domain.main.dto.ReqCommentUpdateDTO;
 import com.example.simple.domain.main.dto.ReqCommentWriteDTO;
 import com.example.simple.domain.main.dto.ReqDeletePostDTO;
 import com.example.simple.domain.main.dto.ReqPostUpdateDTO;
@@ -47,6 +48,11 @@ public class MainControllerApiV1 {
     @PostMapping("/comment/delete")
     public ResponseEntity<ResponseDTO<?>> commentDelete(@RequestBody ReqCommentDeleteDTO dto, HttpSession session) {
         return mainServiceApiV1.deleteComment(dto, session);
+    }
+
+    @PostMapping("/comment/update")
+    public ResponseEntity<ResponseDTO<?>> commentUpdate(@RequestBody ReqCommentUpdateDTO dto, HttpSession session) {
+        return mainServiceApiV1.commentUpdate(dto, session);
     }
 
 }

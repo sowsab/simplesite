@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.domain.main.dto.MainPostDTO;
+import com.example.simple.domain.main.dto.ReqGetCommentUpdateDTO;
 import com.example.simple.domain.main.dto.ReqGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ReqPostDTO;
+import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO;
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
@@ -57,7 +59,8 @@ public class MainService {
         List<ResCommentDTO> resCommentDTOList = new ArrayList<>();
 
         for (CommentEntity commentEntity : commentEntityList) {
-            ResCommentDTO resCommentDTO = new ResCommentDTO(commentEntity.getIdx(), commentEntity.getUserEntity().getId(),
+            ResCommentDTO resCommentDTO = new ResCommentDTO(commentEntity.getIdx(),
+                    commentEntity.getUserEntity().getId(),
                     commentEntity.getContent(), commentEntity.getCreateDate());
 
             resCommentDTOList.add(resCommentDTO);
@@ -86,7 +89,7 @@ public class MainService {
 
         Optional<PostEntity> postEntityOptional = postRepository.findByIdx(postIdx);
 
-        if (postEntityOptional.isEmpty()) {
+        if (!postEntityOptional.isPresent()) {
             throw new RuntimeException("해당 게시물을 찾을 수 없습니다");
         }
 
@@ -100,6 +103,33 @@ public class MainService {
                 postEntity.getContent(), postEntity.getIdx());
 
         return new ResGetPostUpdateDTO(reqGetPostUpdateData);
+
+    }
+
+    public ResGetCommentUpdateDataDTO getCommentUpdateData(Long commentIdx, HttpSession session) {
+
+        LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+        if (loginDTO == null) {
+            throw new RuntimeException("로그인 정보가 없습니다");
+        }
+
+        Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(commentIdx);
+
+        if (!commentEntityOptional.isPresent()) {
+            throw new RuntimeException("해당 댓글을 찾을 수 없습니다");
+        }
+
+        CommentEntity commentEntity = commentEntityOptional.get();
+
+        if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
+            throw new RuntimeException("작성한 게시자가 아닙니다");
+        }
+
+        ReqGetCommentUpdateDTO reqGetCommentUpdateDTO = new ReqGetCommentUpdateDTO(commentEntity.getIdx(),
+                commentEntity.getContent(), commentEntity.getPostEntity().getIdx());
+
+        return new ResGetCommentUpdateDataDTO(reqGetCommentUpdateDTO);
 
     }
 

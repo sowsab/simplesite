@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.domain.main.dto.ReqCommentDeleteDTO;
+import com.example.simple.domain.main.dto.ReqCommentUpdateDTO;
 import com.example.simple.domain.main.dto.ReqCommentWriteDTO;
 import com.example.simple.domain.main.dto.ReqDeletePostDTO;
 import com.example.simple.domain.main.dto.ReqPostUpdateDTO;
@@ -29,6 +30,56 @@ public class MainServiceApiV1 {
 
         private final PostRepository postRepository;
         private final CommentRepository commentRepository;
+
+        public ResponseEntity<ResponseDTO<?>> commentUpdate(ReqCommentUpdateDTO dto, HttpSession session) {
+
+                LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+                Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
+
+                if (!commentEntityOptional.isPresent()) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("존재하지 않는 댓글")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                CommentEntity commentEntity = commentEntityOptional.get();
+
+                if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("댓글을 쓴 사람이 아닙니다")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                CommentEntity updateCommentEntity = CommentEntity.builder()
+                                .idx(commentEntity.getIdx())
+                                .content(dto.getComment().getContent())
+                                .postEntity(PostEntity.builder()
+                                                .idx(commentEntity.getPostEntity().getIdx())
+                                                .build())
+                                .userEntity(UserEntity.builder()
+                                                .idx(commentEntity.getUserEntity().getIdx())
+                                                .build())
+                                .createDate(commentEntity.getCreateDate())
+                                .updateDate(LocalDateTime.now())
+                                .build();
+
+                commentRepository.save(updateCommentEntity);
+
+                return new ResponseEntity<>(
+                                ResponseDTO.builder()
+                                                .code(0)
+                                                .message("댓글 수정에 성공했습니다")
+                                                .build(),
+                                HttpStatus.OK);
+
+        }
 
         public ResponseEntity<ResponseDTO<?>> commentWrite(ReqCommentWriteDTO dto, HttpSession session) {
 

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
   <body>
+    <h1>게시글 수정</h1>
     <div>
       제목
       <input
@@ -17,14 +18,17 @@
     </div>
     <div>
       내용
-      <input
+      <textarea
         th:value="${dto.reqGetPostUpdateDTO.content}"
-        type="text"
         name="content"
         id="content"
-      />
+      ></textarea>
     </div>
-    <div><button th:onclick="reqPost([[${dto.reqGetPostUpdateDTO.idx}]])">글쓰기</button></div>
+    <div>
+      <button th:onclick="reqPost([[${dto.reqGetPostUpdateDTO.idx}]])">
+        글쓰기
+      </button>
+    </div>
 
     <script th:inline="javascript">
       const checkInput = () => {
@@ -66,7 +70,7 @@
             alert(result.message);
 
             if (result.code === 0) {
-              location.replace("/");
+              location.replace("/post/" + idx);
             }
           });
       };

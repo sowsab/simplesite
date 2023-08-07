@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>댓글 수정</h1>
+    <div>
+      <textarea
+        th:value="${dto.reqGetCommentUpdateDTO.content}"
+        id="content"
+        name="content"
+      ></textarea>
+      <button
+        th:onclick="updateComment([[${dto.reqGetCommentUpdateDTO.idx}]], [[${dto.reqGetCommentUpdateDTO.postIdx}]])"
+      >
+        수정하기
+      </button>
+    </div>
+  </body>
+
+  <script>
+    const checkInput = () => {
+      content = document.getElementById("content");
+
+      if (content.value === "" || content.value === null) {
+        alert("내용을 입력해주세요");
+        return;
+      }
+      return true;
+    };
+
+    const updateComment = (idx, postIdx) => {
+      if (!checkInput()) {
+        return;
+      }
+      const dto = {
+        comment: {
+          idx: idx,
+          content: document.getElementById("content").value,
+        },
+      };
+
+      fetch("/api/v1/post/comment/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(dto),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          alert(result.message);
+
+          if (result.code === 0) {
+            location.replace("/post/" + postIdx);
+          }
+        });
+    };
+  </script>
+</html>
