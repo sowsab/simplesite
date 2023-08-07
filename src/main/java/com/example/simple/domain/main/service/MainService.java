@@ -57,7 +57,7 @@ public class MainService {
         List<ResCommentDTO> resCommentDTOList = new ArrayList<>();
 
         for (CommentEntity commentEntity : commentEntityList) {
-            ResCommentDTO resCommentDTO = new ResCommentDTO(commentEntity.getUserEntity().getId(),
+            ResCommentDTO resCommentDTO = new ResCommentDTO(commentEntity.getIdx(), commentEntity.getUserEntity().getId(),
                     commentEntity.getContent(), commentEntity.getCreateDate());
 
             resCommentDTOList.add(resCommentDTO);

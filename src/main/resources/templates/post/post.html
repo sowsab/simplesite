@@ -1,75 +1,166 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <button onclick="goMain()">홈으로</button>
     <h1><span th:text="${dto.reqPostDTO.title}">제목</span></h1>
-    <div>
     <div>글쓴이: <span th:text="${dto.reqPostDTO.userId}">test</span></div>
 
     <div>
-        <span th:text="${dto.reqPostDTO.content}">내용</span>
+      <span th:text="${dto.reqPostDTO.content}">내용</span>
     </div>
-    <div>글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span></div>
+    <div>
+      글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span>
+    </div>
 
-    <div><button th:onclick="goUpdate([[${dto.reqPostDTO.idx}]])">게시글 수정</button></div>
-    <div><button th:onclick="postDelete([[${dto.reqPostDTO.idx}]])">게시글 삭제</button></div>
+    <div>
+      <button th:onclick="goUpdate([[${dto.reqPostDTO.idx}]])">
+        게시글 수정
+      </button>
+    </div>
+    <div>
+      <button th:onclick="postDelete([[${dto.reqPostDTO.idx}]])">
+        게시글 삭제
+      </button>
+    </div>
 
     <h2>덧글</h2>
 
-    <div><input type="text" id="comment" name="comment"> <button>덧글 쓰기</button></div>
+    <div>
+      <input
+        th:if="${session.dto != null}"
+        type="text"
+        id="comment"
+        name="comment"
+      />
+      <button
+        th:if="${session.dto != null}"
+        th:onclick="commentWrite([[${dto.reqPostDTO.idx}]])"
+      >
+        덧글 쓰기
+      </button>
+    </div>
 
     <div>
-        <table border="1">
-            <tr th:each="commentDTO : ${dto.reqPostDTO.resCommentDTOList}">
-                <td th:text="${commentDTO.userId}">글쓴이</td>
-                <td th:text="${commentDTO.content}">내용</td>
-                <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
-            </tr>
-        </table>
+      <table border="1">
+        <tr th:each="commentDTO : ${dto.reqPostDTO.resCommentDTOList}">
+          <td th:text="${commentDTO.userId}">글쓴이</td>
+          <td th:text="${commentDTO.content}">내용</td>
+          <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
+          <td>
+            <button th:onclick="deleteComment([[${commentDTO.idx}]])">
+              삭제
+            </button>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <script th:inline="javascript">
-
-        const postDelete = (idx) => {
-
-            const dto = {
-
-                post: {
-                    idx: idx,
-                },
-            
-            
-            };
-
-            fetch("/api/v1/post/delete", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8",
-            },
-            body: JSON.stringify(dto),
-            })
-            .then((response) => response.json())
-            .then((result) => {
-                alert(result.message);
-
-                if (result.code === 0) {
-                location.replace("/");
-                }
-            });
+      const deleteComment = (idx) => {
+        const dto = {
+          comment: {
+            idx: idx,
+          },
         };
 
-        const goUpdate = (idx) => {
-            window.location.href = "/post/update/" + idx;
+        fetch("/api/v1/post/comment/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.reload();
+            }
+          });
+      };
+
+      const checkInput = () => {
+        comment = document.getElementById("comment");
+
+        if (sessionStorage === null) {
+          alert("로그인을 주세요");
+          return;
+        }
+        return true;
+
+        if (comment.value === "" || comment.value === null) {
+          alert("댓글을 입력해주세요");
+          return;
+        }
+        return true;
+      };
+
+      const commentWrite = (idx) => {
+        if (!checkInput()) {
+          return;
         }
 
-        const goMain = () => {
-            window.location.href = "/";
+        const dto = {
+          comment: {
+            content: document.getElementById("comment").value,
+            postIdx: idx,
+          },
         };
+
+        fetch("/api/v1/post/comment/write", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.reload();
+            }
+          });
+      };
+
+      const postDelete = (idx) => {
+        const dto = {
+          post: {
+            idx: idx,
+          },
+        };
+
+        fetch("/api/v1/post/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.replace("/");
+            }
+          });
+      };
+
+      const goUpdate = (idx) => {
+        window.location.href = "/post/update/" + idx;
+      };
+
+      const goMain = () => {
+        window.location.href = "/";
+      };
     </script>
-</body>
+  </body>
 </html>

@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class ReqPostDTO {
 
     private Long idx;
@@ -23,8 +25,10 @@ public class ReqPostDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Builder
     public static class ResCommentDTO {
 
+        private Long idx;
         private String userId;
         private String content;
         private LocalDateTime createDate;
