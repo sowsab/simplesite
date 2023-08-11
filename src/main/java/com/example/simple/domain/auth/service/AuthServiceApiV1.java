@@ -1,5 +1,6 @@
 package com.example.simple.domain.auth.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,9 @@ import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
 import com.example.simple.domain.auth.dto.ReqUpdateDTO;
 import com.example.simple.model.user.entity.UserEntity;
+import com.example.simple.model.user.entity.UserRoleEntity;
 import com.example.simple.model.user.repository.UserRepository;
+import com.example.simple.model.user.repository.UserRoleRepository;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthServiceApiV1 {
 
         private final UserRepository userRepository;
+        private final UserRoleRepository userRoleRepository;
 
         public ResponseEntity<?> login(ReqLoginDTO dto, HttpSession session) {
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
@@ -70,8 +74,8 @@ public class AuthServiceApiV1 {
         public ResponseEntity<ResponseDTO<?>> join(ReqJoinDTO dto) {
 
                 if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
-                dto.getUser().getId() == "" || dto.getUser().getId() == null ||
-                dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
+                                dto.getUser().getId() == "" || dto.getUser().getId() == null ||
+                                dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
                         return new ResponseEntity<>(
                                         ResponseDTO.builder()
                                                         .code(1)
@@ -103,12 +107,24 @@ public class AuthServiceApiV1 {
                 }
 
                 UserEntity userEntity = UserEntity.builder()
-                .email(dto.getUser().getEmail())
-                .id(dto.getUser().getId())
-                .password(dto.getUser().getPassword())
-                .build();
+                                .email(dto.getUser().getEmail())
+                                .id(dto.getUser().getId())
+                                .password(dto.getUser().getPassword())
+                                .build();
 
                 userRepository.save(userEntity);
+
+                Optional<UserEntity> joinUserEntityOptional = userRepository.findById(dto.getUser().getId());
+
+                UserEntity joinUserEntity = joinUserEntityOptional.get();
+
+                UserRoleEntity userRoleEntity = UserRoleEntity.builder()
+                                .userEntity(UserEntity.builder().idx(joinUserEntity.getIdx()).build())
+                                .role("USER")
+                                .createDate(LocalDateTime.now())
+                                .build();
+
+                userRoleRepository.save(userRoleEntity);
 
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
@@ -123,8 +139,8 @@ public class AuthServiceApiV1 {
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
                 if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
-                dto.getUser().getId() == "" || dto.getUser().getId() == null ||
-                dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
+                                dto.getUser().getId() == "" || dto.getUser().getId() == null ||
+                                dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
                         return new ResponseEntity<>(
                                         ResponseDTO.builder()
                                                         .code(1)
@@ -144,39 +160,39 @@ public class AuthServiceApiV1 {
 
                 if (!dto.getUser().getId().equals(loginDTO.getUser().getId())) {
                         Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
-                
+
                         if (userEntityOptional.isPresent()) {
-                            return new ResponseEntity<>(
-                                    ResponseDTO.builder()
-                                            .code(1)
-                                            .message("아이디가 중복 되었습니다")
-                                            .build(),
-                                    HttpStatus.BAD_REQUEST);
+                                return new ResponseEntity<>(
+                                                ResponseDTO.builder()
+                                                                .code(1)
+                                                                .message("아이디가 중복 되었습니다")
+                                                                .build(),
+                                                HttpStatus.BAD_REQUEST);
                         }
-                    }
-                
-                    if (!dto.getUser().getEmail().equals(loginDTO.getUser().getEmail())) {
+                }
+
+                if (!dto.getUser().getEmail().equals(loginDTO.getUser().getEmail())) {
                         Optional<UserEntity> userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
-                
+
                         if (userEntityOptional.isPresent()) {
-                            return new ResponseEntity<>(
-                                    ResponseDTO.builder()
-                                            .code(1)
-                                            .message("이메일이 중복 되었습니다")
-                                            .build(),
-                                    HttpStatus.BAD_REQUEST);
+                                return new ResponseEntity<>(
+                                                ResponseDTO.builder()
+                                                                .code(1)
+                                                                .message("이메일이 중복 되었습니다")
+                                                                .build(),
+                                                HttpStatus.BAD_REQUEST);
                         }
-                    }
+                }
 
                 UserEntity userEntity = UserEntity.builder()
-                .idx(loginDTO.getUser().getIdx())
-                .id(dto.getUser().getId())
-                .email(dto.getUser().getEmail())
-                .password(dto.getUser().getPassword())
-                .build();
+                                .idx(loginDTO.getUser().getIdx())
+                                .id(dto.getUser().getId())
+                                .email(dto.getUser().getEmail())
+                                .password(dto.getUser().getPassword())
+                                .build();
 
                 userRepository.save(userEntity);
-                
+
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
                                                 .code(0)
@@ -185,7 +201,5 @@ public class AuthServiceApiV1 {
                                 HttpStatus.OK);
 
         }
-        
-
 
 }

@@ -19,6 +19,7 @@ public class ReqPostDTO {
     private String content;
     private String userId;
     private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
     private List<ResCommentDTO> resCommentDTOList;
 

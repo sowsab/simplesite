@@ -79,6 +79,7 @@ public class MainService {
 
         ReqPostDTO reqPostDTO = new ReqPostDTO(postEntityOptional.get().getIdx(), postEntityOptional.get().getTitle(),
                 postEntityOptional.get().getContent(), postEntityOptional.get().getUserEntity().getId(),
+                postEntityOptional.get().getUpdateDate(),
                 postEntityOptional.get().getCreateDate(), resCommentDTOList);
 
         return new ResPostDTO(reqPostDTO);

@@ -3,6 +3,7 @@ package com.example.simple.domain.auth.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.simple.domain.auth.dto.ResGetUpdateDTO;
 import com.example.simple.domain.auth.service.AuthService;
@@ -50,6 +51,12 @@ public class AuthController {
 
         return "redirect:/";
     }
+
+    @GetMapping("/auth/user/{userIdx}")
+    public String getUserPostList(Model model, HttpSession session, @PathVariable Long userIdx) {
+
+        return "auth/user-detail";
+    } 
     
     
     

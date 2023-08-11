@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS `comment`;
 DROP TABLE IF EXISTS `post`;
+DROP TABLE IF EXISTS `user_role`;
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
@@ -10,6 +11,17 @@ CREATE TABLE `user` (
   PRIMARY KEY (`idx`),
   UNIQUE KEY `user_un_email` (`email`),
   UNIQUE KEY `user_un_id` (`id`)
+);
+
+CREATE TABLE `user_role` (
+  `idx` int(11) NOT NULL AUTO_INCREMENT,
+  `user_idx` int(11) NOT NULL,
+  `role` varchar(100) NOT NULL,
+  `create_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`idx`),
+  KEY `user_role_FK` (`user_idx`),
+  CONSTRAINT `user_role_FK` FOREIGN KEY (`user_idx`) REFERENCES `user` (`idx`) ON DELETE CASCADE,
+  CONSTRAINT `user_role_check` CHECK (`role` in ('ADMIN','USER'))
 );
 
 CREATE TABLE `post` (

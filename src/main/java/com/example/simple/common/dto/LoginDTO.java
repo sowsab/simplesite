@@ -1,5 +1,7 @@
 package com.example.simple.common.dto;
 
+import java.util.List;
+
 import com.example.simple.model.user.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ public class LoginDTO {
         private String email;
         private String id;
         private String password;
+        private List<String> roleList;
 
         public static User entityConvert(UserEntity userEntity) {
             return User.builder()
@@ -36,6 +39,8 @@ public class LoginDTO {
                     .email(userEntity.getEmail())
                     .id(userEntity.getId())
                     .password(userEntity.getPassword())
+                    .roleList(userEntity.getUserRoleEntitiyList().stream()
+                            .map(userRoleEntity -> userRoleEntity.getRole()).toList())
                     .build();
         }
     }
