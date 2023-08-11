@@ -13,10 +13,4 @@ public class MainPostDTO {
     private String title;
     private String userId;
 
-    public MainPostDTO(long idx, String title, String userId) {
-        this.idx = idx;
-        this.title = title;
-        this.userId = userId;
-    }
-
 }
