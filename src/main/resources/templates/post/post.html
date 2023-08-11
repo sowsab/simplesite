@@ -16,7 +16,9 @@
     <div>
       글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span>
     </div>
-    <div> 업데이트 시간 <span th:text="${dto.reqPostDTO.updateDate}"></span></div>
+    <div>
+      업데이트 시간 <span th:text="${dto.reqPostDTO.updateDate}"></span>
+    </div>
 
     <div>
       <button th:onclick="goUpdate([[${dto.reqPostDTO.idx}]])">
@@ -26,6 +28,14 @@
     <div>
       <button th:onclick="postDelete([[${dto.reqPostDTO.idx}]])">
         게시글 삭제
+      </button>
+    </div>
+
+    <div
+      th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
+    >
+      <button th:onclick="adminPostDelete([[${dto.reqPostDTO.idx}]])">
+        관리자 권한 삭제
       </button>
     </div>
 
@@ -66,6 +76,13 @@
           <td>
             <button th:onclick="deleteComment([[${commentDTO.idx}]])">
               삭제
+            </button>
+          </td>
+          <td
+            th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
+          >
+            <button th:onclick="adminCommentDelete([[${commentDTO.idx}]])">
+              관리자 삭제
             </button>
           </td>
         </tr>
@@ -142,6 +159,54 @@
 
             if (result.code === 0) {
               location.reload();
+            }
+          });
+      };
+
+      const adminCommentDelete = (idx) => {
+        const dto = {
+          comment: {
+            idx: idx,
+          },
+        };
+
+        fetch("/api/v1/post/admin/comment/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.reload();
+            }
+          });
+      };
+
+      const adminPostDelete = (idx) => {
+        const dto = {
+          post: {
+            idx: idx,
+          },
+        };
+
+        fetch("/api/v1/post/admin/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.replace("/");
             }
           });
       };

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.dto.ResponseDTO;
+import com.example.simple.domain.main.dto.ReqAdminDeleteCommentDTO;
+import com.example.simple.domain.main.dto.ReqAdminDeletePostDTO;
 import com.example.simple.domain.main.dto.ReqCommentDeleteDTO;
 import com.example.simple.domain.main.dto.ReqCommentUpdateDTO;
 import com.example.simple.domain.main.dto.ReqCommentWriteDTO;
@@ -271,6 +273,66 @@ public class MainServiceApiV1 {
                 }
                 commentEntity.setDeleteDate(LocalDateTime.now());
 
+                commentRepository.delete(commentEntity);
+
+                return new ResponseEntity<>(
+                                ResponseDTO.builder()
+                                                .code(0)
+                                                .message("댓글 삭제에 성공했습니다")
+                                                .build(),
+                                HttpStatus.OK);
+        }
+
+        public ResponseEntity<ResponseDTO<?>> adminDeletePost(ReqAdminDeletePostDTO dto, HttpSession session) {
+
+                LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+                if (!loginDTO.getUser().getRoleList().contains("ADMIN")) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("관리자가 아닙니다")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                Optional<PostEntity> postEntityOptional = postRepository
+                                .findByIdxAndDeleteDateIsNull(dto.getPost().getIdx());
+
+                PostEntity postEntity = postEntityOptional.get();
+
+                postEntity.setDeleteDate(LocalDateTime.now());
+
+                postRepository.delete(postEntity);
+
+                return new ResponseEntity<>(
+                                ResponseDTO.builder()
+                                                .code(0)
+                                                .message("게시글 삭제에 성공했습니다")
+                                                .build(),
+                                HttpStatus.OK);
+
+        }
+
+        public ResponseEntity<ResponseDTO<?>> adminCommentDelete(ReqAdminDeleteCommentDTO dto, HttpSession session) {
+
+                LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+                if (!loginDTO.getUser().getRoleList().contains("ADMIN")) {
+                        return new ResponseEntity<>(
+                                        ResponseDTO.builder()
+                                                        .code(1)
+                                                        .message("관리자가 아닙니다")
+                                                        .build(),
+                                        HttpStatus.BAD_REQUEST);
+                }
+
+                Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
+
+                CommentEntity commentEntity = commentEntityOptional.get();
+
+                commentEntity.setDeleteDate(LocalDateTime.now());
+                
                 commentRepository.delete(commentEntity);
 
                 return new ResponseEntity<>(

@@ -1,4 +1,4 @@
-package com.example.simple.common.dto;
+package com.example.simple.domain.auth.dto;
 
 import java.util.List;
 
@@ -13,12 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-public class LoginDTO {
-    private User user;
+public class ResAdminGetUserDTO {
 
-    public static LoginDTO Convert(UserEntity userEntity) {
-        return LoginDTO.builder()
-                .user(User.entityConvert(userEntity))
+    private List<User> userList;
+
+    public static ResAdminGetUserDTO convert(List<UserEntity> userEntitityList) {
+        return ResAdminGetUserDTO.builder()
+                .userList(userEntitityList.stream()
+                        .map(userEntity -> User.convert(userEntity))
+                        .toList())
                 .build();
     }
 
@@ -27,22 +30,23 @@ public class LoginDTO {
     @Getter
     @Builder
     public static class User {
+
         private Long idx;
         private String email;
         private String id;
-        private String password;
         private List<String> roleList;
 
-        public static User entityConvert(UserEntity userEntity) {
+        public static User convert(UserEntity userEntity) {
             return User.builder()
                     .idx(userEntity.getIdx())
                     .email(userEntity.getEmail())
                     .id(userEntity.getId())
-                    .password(userEntity.getPassword())
-                    .roleList(userEntity.getUserRoleEntitiyList().stream()
-                            .map(userRoleEntity -> userRoleEntity.getRole())
-                            .toList())
+                    .roleList(
+                            userEntity.getUserRoleEntitiyList().stream()
+                                    .map(userRoleEntity -> userRoleEntity.getRole())
+                                    .toList())
                     .build();
         }
     }
+
 }
