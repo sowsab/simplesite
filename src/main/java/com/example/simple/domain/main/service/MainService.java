@@ -68,19 +68,24 @@ public class MainService {
         // resCommentDTOList.add(resCommentDTO);
         // }
 
-        List<ResCommentDTO> resCommentDTOList = commentEntityList.stream()
-                .map(commentEntity -> new ResCommentDTO(commentEntity.getIdx(), commentEntity.getUserEntity().getId(),
-                        commentEntity.getContent(), commentEntity.getCreateDate(), commentEntity.getUpdateDate()))
-                .toList();
+        // List<ResCommentDTO> resCommentDTOList = commentEntityList.stream()
+        //         .map(commentEntity -> new ResCommentDTO(commentEntity.getIdx(), commentEntity.getUserEntity().getId(),
+        //                 commentEntity.getContent(), commentEntity.getCreateDate(), commentEntity.getUpdateDate()))
+        //         .toList();
 
         if (!postEntityOptional.isPresent()) {
             throw new RuntimeException("존재하지 않은 게시물 입니다");
         }
 
-        ReqPostDTO reqPostDTO = new ReqPostDTO(postEntityOptional.get().getIdx(), postEntityOptional.get().getTitle(),
-                postEntityOptional.get().getContent(), postEntityOptional.get().getUserEntity().getId(),
-                postEntityOptional.get().getUpdateDate(),
-                postEntityOptional.get().getCreateDate(), resCommentDTOList);
+        PostEntity postEntity = postEntityOptional.get();
+
+        // ReqPostDTO reqPostDTO = new ReqPostDTO(postEntityOptional.get().getIdx(), postEntityOptional.get().getTitle(),
+        //         postEntityOptional.get().getContent(), postEntityOptional.get().getUserEntity().getId(),
+        //         postEntityOptional.get().getUpdateDate(),
+        //         postEntityOptional.get().getCreateDate(), resCommentDTOList);
+
+        ReqPostDTO reqPostDTO = ReqPostDTO.convert(postEntity, commentEntityList);
+        
 
         return new ResPostDTO(reqPostDTO);
 

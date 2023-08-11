@@ -3,6 +3,9 @@ package com.example.simple.domain.main.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.simple.model.comment.entity.CommentEntity;
+import com.example.simple.model.post.entity.PostEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +26,20 @@ public class ReqPostDTO {
 
     private List<ResCommentDTO> resCommentDTOList;
 
+    public static ReqPostDTO convert(PostEntity postEntity, List<CommentEntity> commentEntityList) {
+        return ReqPostDTO.builder()
+                .idx(postEntity.getIdx())
+                .title(postEntity.getTitle())
+                .content(postEntity.getContent())
+                .userId(postEntity.getUserEntity().getId())
+                .createDate(postEntity.getCreateDate())
+                .updateDate(postEntity.getUpdateDate())
+                .resCommentDTOList(commentEntityList.stream()
+                        .map(commentEntity -> ResCommentDTO.convert(commentEntity))
+                        .toList())
+                .build();
+    }
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -34,6 +51,16 @@ public class ReqPostDTO {
         private String content;
         private LocalDateTime createDate;
         private LocalDateTime updateDate;
+
+        public static ResCommentDTO convert(CommentEntity commentEntity) {
+            return ResCommentDTO.builder()
+                    .idx(commentEntity.getIdx())
+                    .content(commentEntity.getContent())
+                    .userId(commentEntity.getUserEntity().getId())
+                    .createDate(commentEntity.getCreateDate())
+                    .updateDate(commentEntity.getUpdateDate())
+                    .build();
+        }
 
     }
 
