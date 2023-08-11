@@ -123,8 +123,16 @@ public class MainService {
             throw new RuntimeException("작성한 게시자가 아닙니다");
         }
 
-        ReqGetPostUpdateDTO reqGetPostUpdateData = new ReqGetPostUpdateDTO(postEntity.getIdx(), postEntity.getTitle(),
-                postEntity.getContent(), postEntity.getIdx());
+        // ReqGetPostUpdateDTO reqGetPostUpdateData = new
+        // ReqGetPostUpdateDTO(postEntity.getIdx(), postEntity.getTitle(),
+        // postEntity.getContent(), postEntity.getIdx());
+
+        ReqGetPostUpdateDTO reqGetPostUpdateData = ReqGetPostUpdateDTO.builder()
+                .idx(postEntity.getIdx())
+                .title(postEntity.getTitle())
+                .content(postEntity.getContent())
+                .userIdx(postEntity.getUserEntity().getIdx())
+                .build();
 
         return new ResGetPostUpdateDTO(reqGetPostUpdateData);
 
