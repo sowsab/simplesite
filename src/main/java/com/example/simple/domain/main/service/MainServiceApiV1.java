@@ -332,7 +332,7 @@ public class MainServiceApiV1 {
                 CommentEntity commentEntity = commentEntityOptional.get();
 
                 commentEntity.setDeleteDate(LocalDateTime.now());
-                
+
                 commentRepository.delete(commentEntity);
 
                 return new ResponseEntity<>(
