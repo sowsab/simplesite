@@ -29,7 +29,7 @@ public class AuthControllerApiV1 {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<ResponseDTO<?>> join(@Valid @RequestBody ReqJoinDTO dto) {
+    public ResponseEntity<ResponseDTO<?>> join(@RequestBody @Valid ReqJoinDTO dto) {
         return authServiceApiV1.join(dto);
     }
 
