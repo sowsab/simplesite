@@ -59,10 +59,14 @@ public class AuthServiceApiV1 {
 
         public ResponseEntity<ResponseDTO<?>> join(ReqJoinDTO dto) {
 
-                if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
-                                dto.getUser().getId() == "" || dto.getUser().getId() == null ||
-                                dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
-                        throw new BadRequestException("회원정보를 확인해주세요");
+                // if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
+                //                 dto.getUser().getId() == "" || dto.getUser().getId() == null ||
+                //                 dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
+                //         throw new BadRequestException("회원정보를 확인해주세요");
+                // }
+
+                if (!dto.getUser().getPassword().equals(dto.getUser().getCheckpw())) {
+                        throw new BadRequestException("비밀번호를 확인해 주세요");
                 }
 
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());

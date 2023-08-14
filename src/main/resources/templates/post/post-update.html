@@ -19,7 +19,7 @@
     <div>
       내용
       <textarea
-        th:value="${dto.reqGetPostUpdateDTO.content}"
+        th:text="${dto.reqGetPostUpdateDTO.content}"
         name="content"
         id="content"
       ></textarea>
@@ -37,10 +37,10 @@
 
         if (title.value === "" || title.value === null) {
           alert("제목을 입력해주세요");
-          return;
+          return false;
         } else if (content.value === "" || content.value === null) {
           alert("내용을 입력해주세요");
-          return;
+          return false;
         }
         return true;
       };

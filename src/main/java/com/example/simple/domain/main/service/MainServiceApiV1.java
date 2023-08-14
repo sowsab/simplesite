@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.dto.ResponseDTO;
-import com.example.simple.common.exception.BadRequestException;
 import com.example.simple.common.exception.CustomNotFoundException;
 import com.example.simple.common.exception.UnauthorizedException;
 import com.example.simple.domain.main.dto.ReqAdminDeleteCommentDTO;
@@ -78,10 +77,6 @@ public class MainServiceApiV1 {
 
         public ResponseEntity<ResponseDTO<?>> commentWrite(ReqCommentWriteDTO dto, HttpSession session) {
 
-                if (dto.getComment().getContent() == null || dto.getComment().getContent() == "") {
-                        throw new BadRequestException("게시글 정보를 확인해주세요");
-                }
-
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
                 CommentEntity commentEntity = CommentEntity.builder()
@@ -108,11 +103,6 @@ public class MainServiceApiV1 {
         }
 
         public ResponseEntity<ResponseDTO<?>> postWrite(ReqPostWriteDTO dto, HttpSession session) {
-
-                if (dto.getPost().getTitle() == null || dto.getPost().getTitle() == "" ||
-                                dto.getPost().getContent() == null || dto.getPost().getContent() == "") {
-                        throw new BadRequestException("게시글 정보를 확인해주세요");
-                }
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
@@ -141,11 +131,6 @@ public class MainServiceApiV1 {
 
                 if (!postEntityOptional.isPresent()) {
                         throw new CustomNotFoundException("존재하지 않는 게시글 입니다");
-                }
-
-                if (dto.getPost().getTitle() == null || dto.getPost().getTitle() == "" ||
-                                dto.getPost().getContent() == null || dto.getPost().getContent() == "") {
-                        throw new BadRequestException("게시글 정보를 확인해주세요");
                 }
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");

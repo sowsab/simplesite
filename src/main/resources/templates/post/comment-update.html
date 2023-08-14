@@ -9,7 +9,7 @@
     <h1>댓글 수정</h1>
     <div>
       <textarea
-        th:value="${dto.reqGetCommentUpdateDTO.content}"
+        th:text="${dto.reqGetCommentUpdateDTO.content}"
         id="content"
         name="content"
       ></textarea>
@@ -27,7 +27,7 @@
 
       if (content.value === "" || content.value === null) {
         alert("내용을 입력해주세요");
-        return;
+        return false;
       }
       return true;
     };

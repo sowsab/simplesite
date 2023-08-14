@@ -52,17 +52,20 @@
         id = document.getElementById("id");
         password = document.getElementById("password");
         checkpw = document.getElementById("checkPw");
-        sesseionpw = "${session.dto.user.id}"
+        sesseionpw = "${session.dto.user.id}";
 
         if (id.value === "" || id.value === null) {
           alert("아이디를 입력해주세요");
-          return;
+          return false;
         } else if (password.value === "" || password.value === null) {
           alert("비밀번호를 입력해주세요");
-          return;
+          return false;
         } else if (email.value === "" || email.value === null) {
           alert("이메일을 입력해주세요");
-        } else if (sesseionpw === checkpw) alert("로그인된 비밀번호와 같지 않습니다");
+        } else if (sesseionpw === checkpw) {
+          alert("로그인된 비밀번호와 같지 않습니다");
+          return false;
+        }
         return true;
       };
 

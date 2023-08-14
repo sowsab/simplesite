@@ -18,6 +18,7 @@ import com.example.simple.domain.main.dto.ReqPostWriteDTO;
 import com.example.simple.domain.main.service.MainServiceApiV1;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,7 +29,7 @@ public class MainControllerApiV1 {
     private final MainServiceApiV1 mainServiceApiV1;
 
     @PostMapping("/write")
-    public ResponseEntity<ResponseDTO<?>> postWrite(@RequestBody ReqPostWriteDTO dto, HttpSession session) {
+    public ResponseEntity<ResponseDTO<?>> postWrite(@RequestBody @Valid ReqPostWriteDTO dto, HttpSession session) {
         return mainServiceApiV1.postWrite(dto, session);
     }
 
@@ -38,12 +39,12 @@ public class MainControllerApiV1 {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<ResponseDTO<?>> postUpdate(@RequestBody ReqPostUpdateDTO dto, HttpSession session) {
+    public ResponseEntity<ResponseDTO<?>> postUpdate(@RequestBody @Valid ReqPostUpdateDTO dto, HttpSession session) {
         return mainServiceApiV1.postUpdate(dto, session);
     }
 
     @PostMapping("/comment/write")
-    public ResponseEntity<ResponseDTO<?>> commentWrite(@RequestBody ReqCommentWriteDTO dto, HttpSession session) {
+    public ResponseEntity<ResponseDTO<?>> commentWrite(@RequestBody @Valid ReqCommentWriteDTO dto, HttpSession session) {
         return mainServiceApiV1.commentWrite(dto, session);
     }
 
@@ -53,7 +54,7 @@ public class MainControllerApiV1 {
     }
 
     @PostMapping("/comment/update")
-    public ResponseEntity<ResponseDTO<?>> commentUpdate(@RequestBody ReqCommentUpdateDTO dto, HttpSession session) {
+    public ResponseEntity<ResponseDTO<?>> commentUpdate(@RequestBody @Valid ReqCommentUpdateDTO dto, HttpSession session) {
         return mainServiceApiV1.commentUpdate(dto, session);
     }
 

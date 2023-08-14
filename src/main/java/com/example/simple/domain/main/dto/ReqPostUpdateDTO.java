@@ -1,5 +1,7 @@
 package com.example.simple.domain.main.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ReqPostUpdateDTO {
     
+    @Valid
     private Post post;
 
     @NoArgsConstructor
@@ -16,8 +19,13 @@ public class ReqPostUpdateDTO {
     @Getter
     public static class Post {
     
+        @NotNull
         private Long idx;
+
+        @NotNull
         private String title;
+
+        @NotNull
         private String content;
         
     }
