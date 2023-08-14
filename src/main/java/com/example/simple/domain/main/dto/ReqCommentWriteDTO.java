@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReqCommentWriteDTO {
     
     @Valid
+    @NotNull(message = "댓글을 입력해주세요")
     private Comment comment;
 
     @NoArgsConstructor

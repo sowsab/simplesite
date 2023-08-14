@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReqLoginDTO {
     
     @Valid
+    @NotNull(message = "유저 정보를 입력해주세요")
     private User user;
 
     @NoArgsConstructor

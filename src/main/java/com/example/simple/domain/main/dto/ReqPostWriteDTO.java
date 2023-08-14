@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReqPostWriteDTO {
     
     @Valid
+    @NotNull(message = "게시글을 입력해주세요")
     private Post post;
 
     @NoArgsConstructor
