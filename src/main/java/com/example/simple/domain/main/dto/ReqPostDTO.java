@@ -20,6 +20,7 @@ public class ReqPostDTO {
     private Long idx;
     private String title;
     private String content;
+    private Long userIdx;
     private String userId;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
@@ -31,6 +32,7 @@ public class ReqPostDTO {
                 .idx(postEntity.getIdx())
                 .title(postEntity.getTitle())
                 .content(postEntity.getContent())
+                .userIdx(postEntity.getUserEntity().getIdx())
                 .userId(postEntity.getUserEntity().getId())
                 .createDate(postEntity.getCreateDate())
                 .updateDate(postEntity.getUpdateDate())
@@ -47,6 +49,7 @@ public class ReqPostDTO {
     public static class ResCommentDTO {
 
         private Long idx;
+        private Long userIdx;
         private String userId;
         private String content;
         private LocalDateTime createDate;
@@ -56,6 +59,7 @@ public class ReqPostDTO {
             return ResCommentDTO.builder()
                     .idx(commentEntity.getIdx())
                     .content(commentEntity.getContent())
+                    .userIdx(commentEntity.getUserEntity().getIdx())
                     .userId(commentEntity.getUserEntity().getId())
                     .createDate(commentEntity.getCreateDate())
                     .updateDate(commentEntity.getUpdateDate())
