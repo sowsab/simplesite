@@ -82,11 +82,12 @@ public class RestExceptionHandler {
                 String errorMessage = fieldError != null ? fieldError.getDefaultMessage() : "유효성 검사 실패";
 
                 // 응답 생성
-                ResponseDTO<?> response = ResponseDTO.builder()
-                                .code(HttpStatus.BAD_REQUEST.value())
-                                .message(errorMessage)
-                                .build();
-                return ResponseEntity.badRequest().body(response);
+                return new ResponseEntity<>(
+                                ResponseDTO.builder()
+                                                .code(HttpStatus.BAD_REQUEST.value())
+                                                .message(errorMessage)
+                                                .build(),
+                                HttpStatus.BAD_REQUEST);
         }
 
 }
