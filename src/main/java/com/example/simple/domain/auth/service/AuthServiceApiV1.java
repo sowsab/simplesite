@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.dto.ResponseDTO;
+import com.example.simple.common.exception.BadRequestException;
 import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
 import com.example.simple.domain.auth.dto.ReqUpdateDTO;
@@ -31,33 +32,18 @@ public class AuthServiceApiV1 {
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
 
                 if (!userEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("존재하지 않는 사용자 입니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("존재하지 않는 사용자 입니다");
                 }
 
                 if (dto.getUser().getId() == null ||
                                 dto.getUser().getId().equals("")) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("아이디를 입력해 주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("아이디를 입력해 주세요");
                 }
 
                 UserEntity userEntity = userEntityOptional.get();
 
                 if (!userEntity.getPassword().equals(dto.getUser().getPassword())) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("비밀번호가 일치하지 않습니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("비밀번호가 일치하지 않습니다");
                 }
 
                 session.setAttribute("dto", LoginDTO.Convert(userEntity));
@@ -76,34 +62,19 @@ public class AuthServiceApiV1 {
                 if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
                                 dto.getUser().getId() == "" || dto.getUser().getId() == null ||
                                 dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("회원정보를 확인해주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("회원정보를 확인해주세요");
                 }
 
                 Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
 
                 if (userEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("이미 존재하는 아이디 입니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("이미 존재하는 아이디 입니다");
                 }
 
                 userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
 
                 if (userEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("이미 존재하는 이메일 입니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("이미 존재하는 이메일 입니다");
                 }
 
                 UserEntity userEntity = UserEntity.builder()
@@ -141,33 +112,18 @@ public class AuthServiceApiV1 {
                 if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
                                 dto.getUser().getId() == "" || dto.getUser().getId() == null ||
                                 dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("회원정보를 확인해주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("회원정보를 확인해주세요");
                 }
 
                 if (!dto.getUser().getCheckPw().equals(loginDTO.getUser().getPassword())) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("비밀번호를 확인해주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("비밀번호를 확인해주세요");
                 }
 
                 if (!dto.getUser().getId().equals(loginDTO.getUser().getId())) {
                         Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
 
                         if (userEntityOptional.isPresent()) {
-                                return new ResponseEntity<>(
-                                                ResponseDTO.builder()
-                                                                .code(1)
-                                                                .message("아이디가 중복 되었습니다")
-                                                                .build(),
-                                                HttpStatus.BAD_REQUEST);
+                                throw new BadRequestException("아이디가 중복 되었습니다");
                         }
                 }
 
@@ -175,12 +131,7 @@ public class AuthServiceApiV1 {
                         Optional<UserEntity> userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
 
                         if (userEntityOptional.isPresent()) {
-                                return new ResponseEntity<>(
-                                                ResponseDTO.builder()
-                                                                .code(1)
-                                                                .message("이메일이 중복 되었습니다")
-                                                                .build(),
-                                                HttpStatus.BAD_REQUEST);
+                                throw new BadRequestException("이메일이 중복 되었습니다");
                         }
                 }
 

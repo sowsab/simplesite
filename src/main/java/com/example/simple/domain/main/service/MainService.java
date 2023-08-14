@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
+import com.example.simple.common.exception.BadRequestException;
+import com.example.simple.common.exception.CustomNotFoundException;
+import com.example.simple.common.exception.UnauthorizedException;
 import com.example.simple.domain.main.dto.MainPostDTO;
 import com.example.simple.domain.main.dto.ReqGetCommentUpdateDTO;
 import com.example.simple.domain.main.dto.ReqGetPostUpdateDTO;
@@ -84,7 +87,7 @@ public class MainService {
         // .toList();
 
         if (!postEntityOptional.isPresent()) {
-            throw new RuntimeException("존재하지 않은 게시물 입니다");
+            throw new CustomNotFoundException("존재하지 않은 게시물 입니다");
         }
 
         PostEntity postEntity = postEntityOptional.get();
@@ -107,20 +110,20 @@ public class MainService {
         LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
         if (loginDTO == null) {
-            throw new RuntimeException("로그인 정보가 없습니다");
+            throw new UnauthorizedException("로그인 정보가 없습니다");
 
         }
 
         Optional<PostEntity> postEntityOptional = postRepository.findByIdx(postIdx);
 
         if (!postEntityOptional.isPresent()) {
-            throw new RuntimeException("해당 게시물을 찾을 수 없습니다");
+            throw new CustomNotFoundException("해당 게시물을 찾을 수 없습니다");
         }
 
         PostEntity postEntity = postEntityOptional.get();
 
         if (!loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
-            throw new RuntimeException("작성한 게시자가 아닙니다");
+            throw new UnauthorizedException("작성한 게시자가 아닙니다");
         }
 
         // ReqGetPostUpdateDTO reqGetPostUpdateData = new
@@ -143,19 +146,19 @@ public class MainService {
         LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
         if (loginDTO == null) {
-            throw new RuntimeException("로그인 정보가 없습니다");
+            throw new UnauthorizedException("로그인 정보가 없습니다");
         }
 
         Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(commentIdx);
 
         if (!commentEntityOptional.isPresent()) {
-            throw new RuntimeException("해당 댓글을 찾을 수 없습니다");
+            throw new CustomNotFoundException("해당 댓글을 찾을 수 없습니다");
         }
 
         CommentEntity commentEntity = commentEntityOptional.get();
 
         if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
-            throw new RuntimeException("작성한 게시자가 아닙니다");
+            throw new UnauthorizedException("작성한 게시자가 아닙니다");
         }
 
         // ReqGetCommentUpdateDTO reqGetCommentUpdateDTO = new

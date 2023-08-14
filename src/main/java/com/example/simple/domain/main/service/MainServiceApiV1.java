@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.dto.ResponseDTO;
+import com.example.simple.common.exception.BadRequestException;
+import com.example.simple.common.exception.CustomNotFoundException;
+import com.example.simple.common.exception.UnauthorizedException;
 import com.example.simple.domain.main.dto.ReqAdminDeleteCommentDTO;
 import com.example.simple.domain.main.dto.ReqAdminDeletePostDTO;
 import com.example.simple.domain.main.dto.ReqCommentDeleteDTO;
@@ -40,23 +43,13 @@ public class MainServiceApiV1 {
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
 
                 if (!commentEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("존재하지 않는 댓글")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new CustomNotFoundException("존재하지 않는 댓글");
                 }
 
                 CommentEntity commentEntity = commentEntityOptional.get();
 
                 if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("댓글을 쓴 사람이 아닙니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("댓글을 쓴 사람이 아닙니다");
                 }
 
                 CommentEntity updateCommentEntity = CommentEntity.builder()
@@ -86,12 +79,7 @@ public class MainServiceApiV1 {
         public ResponseEntity<ResponseDTO<?>> commentWrite(ReqCommentWriteDTO dto, HttpSession session) {
 
                 if (dto.getComment().getContent() == null || dto.getComment().getContent() == "") {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("게시글 정보를 확인해주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("게시글 정보를 확인해주세요");
                 }
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
@@ -123,12 +111,7 @@ public class MainServiceApiV1 {
 
                 if (dto.getPost().getTitle() == null || dto.getPost().getTitle() == "" ||
                                 dto.getPost().getContent() == null || dto.getPost().getContent() == "") {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("게시글 정보를 확인해주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("게시글 정보를 확인해주세요");
                 }
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
@@ -157,22 +140,12 @@ public class MainServiceApiV1 {
                 Optional<PostEntity> postEntityOptional = postRepository.findByIdx(dto.getPost().getIdx());
 
                 if (!postEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("존재하지 않는 게시글 입니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new CustomNotFoundException("존재하지 않는 게시글 입니다");
                 }
 
                 if (dto.getPost().getTitle() == null || dto.getPost().getTitle() == "" ||
                                 dto.getPost().getContent() == null || dto.getPost().getContent() == "") {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("게시글 정보를 확인해주세요")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new BadRequestException("게시글 정보를 확인해주세요");
                 }
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
@@ -180,12 +153,7 @@ public class MainServiceApiV1 {
                 PostEntity postEntity = postEntityOptional.get();
 
                 if (!loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("작성자가 아닙니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("작성자가 아닙니다");
                 }
 
                 PostEntity updateEntity = PostEntity.builder()
@@ -212,12 +180,7 @@ public class MainServiceApiV1 {
                                 .findByIdxAndDeleteDateIsNull(dto.getPost().getIdx());
 
                 if (!postEntityOptional.isPresent()) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("존재하지 않는 게시글 입니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new CustomNotFoundException("존재하지 않는 게시글 입니다");
                 }
 
                 PostEntity postEntity = postEntityOptional.get();
@@ -226,12 +189,7 @@ public class MainServiceApiV1 {
 
                 if (loginDTO == null || loginDTO.getUser() == null
                                 || !loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("이 글을 쓴 사람이 아닙니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("이 글을 쓴 사람이 아닙니다");
                 }
 
                 postEntity.setDeleteDate(LocalDateTime.now());
@@ -252,24 +210,14 @@ public class MainServiceApiV1 {
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
                 if (loginDTO == null) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("로그인을 하지 않았습니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("로그인을 하지 않았습니다");
                 }
 
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
                 CommentEntity commentEntity = commentEntityOptional.get();
 
                 if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("이 댓글을 쓴 사람이 아닙니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("이 댓글을 쓴 사람이 아닙니다");
                 }
                 commentEntity.setDeleteDate(LocalDateTime.now());
 
@@ -287,13 +235,12 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 하지 않았습니다");
+                }
+
                 if (!loginDTO.getUser().getRoleList().contains("ADMIN")) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("관리자가 아닙니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("관리자가 아닙니다");
                 }
 
                 Optional<PostEntity> postEntityOptional = postRepository
@@ -318,13 +265,12 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 하지 않았습니다");
+                }
+
                 if (!loginDTO.getUser().getRoleList().contains("ADMIN")) {
-                        return new ResponseEntity<>(
-                                        ResponseDTO.builder()
-                                                        .code(1)
-                                                        .message("관리자가 아닙니다")
-                                                        .build(),
-                                        HttpStatus.BAD_REQUEST);
+                        throw new UnauthorizedException("관리자가 아닙니다");
                 }
 
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());

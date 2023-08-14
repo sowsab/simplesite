@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
+import com.example.simple.common.exception.UnauthorizedException;
 import com.example.simple.domain.auth.dto.ResAdminGetUserDTO;
 import com.example.simple.domain.auth.dto.ResAdminGetUserDetailDTO;
 import com.example.simple.domain.auth.dto.ResGetPostCommentDTO;
@@ -62,7 +63,7 @@ public class AuthService {
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
                 if (!loginDTO.getUser().getRoleList().contains("ADMIN")) {
-                        throw new RuntimeException("관리자 권한이 없습니다");
+                        throw new UnauthorizedException("관리자 권한이 없습니다");
                 }
 
                 List<UserEntity> userEntityList = userRepository.findAll();
@@ -78,7 +79,7 @@ public class AuthService {
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
                 if (!loginDTO.getUser().getRoleList().contains("ADMIN")) {
-                        throw new RuntimeException("관리자 권한이 없습니다");
+                        throw new UnauthorizedException("관리자 권한이 없습니다");
                 }
 
                 List<PostEntity> postEntityList = postRepository.findByUserEntity_Idx(userIdx);
