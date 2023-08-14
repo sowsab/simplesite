@@ -70,12 +70,16 @@
           <td th:text="${commentDTO.content}">내용</td>
           <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
           <td th:text="${commentDTO.updateDate}">업데이트 시간</td>
-          <td th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}">
+          <td
+            th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
+          >
             <button th:onclick="updateComment([[${commentDTO.idx}]])">
               수정
             </button>
           </td>
-          <td th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}">
+          <td
+            th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
+          >
             <button th:onclick="deleteComment([[${commentDTO.idx}]])">
               삭제
             </button>
