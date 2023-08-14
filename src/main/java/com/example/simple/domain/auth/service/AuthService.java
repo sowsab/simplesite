@@ -86,7 +86,11 @@ public class AuthService {
 
                 List<CommentEntity> commentEntityList = commentRepository.findByUserEntity_Idx(userIdx);
 
-                ResAdminGetUserDetailDTO dto = ResAdminGetUserDetailDTO.convert(postEntityList, commentEntityList);
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(userIdx);
+
+                UserEntity userEntity = userEntityOptional.get();
+
+                ResAdminGetUserDetailDTO dto = ResAdminGetUserDetailDTO.convert(postEntityList, commentEntityList, userEntity);
 
                 return dto;
         }

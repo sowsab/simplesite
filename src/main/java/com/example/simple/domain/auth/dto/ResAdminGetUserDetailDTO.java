@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.post.entity.PostEntity;
+import com.example.simple.model.user.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +18,11 @@ import lombok.NoArgsConstructor;
 public class ResAdminGetUserDetailDTO {
     private List<Post> postList;
     private List<Comment> commentList;
+    private Long userIdx;
+    private String userId;
 
     public static ResAdminGetUserDetailDTO convert(List<PostEntity> postEntityList,
-            List<CommentEntity> commentEntitiyList) {
+            List<CommentEntity> commentEntitiyList, UserEntity userEntity) {
         return ResAdminGetUserDetailDTO.builder()
                 .postList(postEntityList.stream()
                         .map(postEntity -> Post.convert(postEntity))
@@ -27,6 +30,8 @@ public class ResAdminGetUserDetailDTO {
                 .commentList(commentEntitiyList.stream()
                         .map(commentEntity -> Comment.convert(commentEntity))
                         .toList())
+                .userIdx(userEntity.getIdx())
+                .userId(userEntity.getId())
                 .build();
 
     }

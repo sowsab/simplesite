@@ -39,7 +39,7 @@
       th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
     >
       <button th:onclick="adminPostDelete([[${dto.reqPostDTO.idx}]])">
-        관리자 권한 삭제
+        관리자 삭제
       </button>
     </div>
 
@@ -71,6 +71,13 @@
           <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
           <td th:text="${commentDTO.updateDate}">업데이트 시간</td>
           <td
+            th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
+          >
+            <button th:onclick="adminCommentDelete([[${commentDTO.idx}]])">
+              관리자 삭제
+            </button>
+          </td>
+          <td
             th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
           >
             <button th:onclick="updateComment([[${commentDTO.idx}]])">
@@ -82,13 +89,6 @@
           >
             <button th:onclick="deleteComment([[${commentDTO.idx}]])">
               삭제
-            </button>
-          </td>
-          <td
-            th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
-          >
-            <button th:onclick="adminCommentDelete([[${commentDTO.idx}]])">
-              관리자 삭제
             </button>
           </td>
         </tr>
