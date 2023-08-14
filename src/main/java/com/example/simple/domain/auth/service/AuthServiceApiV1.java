@@ -35,11 +35,6 @@ public class AuthServiceApiV1 {
                         throw new BadRequestException("존재하지 않는 사용자 입니다");
                 }
 
-                if (dto.getUser().getId() == null ||
-                                dto.getUser().getId().equals("")) {
-                        throw new BadRequestException("아이디를 입력해 주세요");
-                }
-
                 UserEntity userEntity = userEntityOptional.get();
 
                 if (!userEntity.getPassword().equals(dto.getUser().getPassword())) {
@@ -113,7 +108,7 @@ public class AuthServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
-                if (!dto.getUser().getCheckPw().equals(loginDTO.getUser().getPassword())) {
+                if (!dto.getUser().getCheckpw().equals(loginDTO.getUser().getPassword())) {
                         throw new BadRequestException("비밀번호를 확인해주세요");
                 }
 

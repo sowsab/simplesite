@@ -42,7 +42,7 @@ public class MainServiceApiV1 {
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
 
                 if (!commentEntityOptional.isPresent()) {
-                        throw new CustomNotFoundException("존재하지 않는 댓글");
+                        throw new CustomNotFoundException("존재하지 않는 댓글입니다");
                 }
 
                 CommentEntity commentEntity = commentEntityOptional.get();

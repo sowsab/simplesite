@@ -19,10 +19,10 @@ public class ReqPostWriteDTO {
     @Getter
     public static class Post {
         
-        @NotNull
+        @NotNull(message = "제목을 입력해주세요")
         private String title;
 
-        @NotNull
+        @NotNull(message = "내용을 입력해주세요")
         private String content;
         
     }

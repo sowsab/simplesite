@@ -19,7 +19,7 @@ public class ReqCommentWriteDTO {
     @Getter
     public static class Comment {
         
-        @NotNull
+        @NotNull(message = "내용을 입력해주세요")
         private String content;
 
         @NotNull

@@ -24,7 +24,7 @@ public class AuthControllerApiV1 {
     private final AuthServiceApiV1 authServiceApiV1;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody ReqLoginDTO reqLoginDTO, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody @Valid ReqLoginDTO reqLoginDTO, HttpSession session) {
         return authServiceApiV1.login(reqLoginDTO, session);
     }
 
