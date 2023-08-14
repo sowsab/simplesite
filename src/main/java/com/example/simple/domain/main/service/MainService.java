@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.simple.common.dto.LoginDTO;
-import com.example.simple.common.exception.BadRequestException;
 import com.example.simple.common.exception.CustomNotFoundException;
 import com.example.simple.common.exception.UnauthorizedException;
 import com.example.simple.domain.main.dto.MainPostDTO;

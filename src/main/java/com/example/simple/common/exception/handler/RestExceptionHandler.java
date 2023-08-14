@@ -1,6 +1,5 @@
 package com.example.simple.common.exception.handler;
 
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.common.exception.BadRequestException;
+import com.example.simple.common.exception.CustomNotFoundException;
 import com.example.simple.common.exception.ForbbidenException;
 import com.example.simple.common.exception.UnauthorizedException;
 
@@ -58,8 +58,8 @@ public class RestExceptionHandler {
                                 HttpStatus.FORBIDDEN);
         }
 
-        @ExceptionHandler(NotFoundException.class)
-        public ResponseEntity<ResponseDTO<?>> handleNotFoundException(Exception exception) {
+        @ExceptionHandler(CustomNotFoundException.class)
+        public ResponseEntity<ResponseDTO<?>> handleCustomNotFoundException(Exception exception) {
                 exception.printStackTrace();
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
