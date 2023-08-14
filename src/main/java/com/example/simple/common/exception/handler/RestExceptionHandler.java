@@ -84,7 +84,7 @@ public class RestExceptionHandler {
                 // 응답 생성
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
-                                                .code(HttpStatus.BAD_REQUEST.value())
+                                                .code(1)
                                                 .message(errorMessage)
                                                 .build(),
                                 HttpStatus.BAD_REQUEST);
