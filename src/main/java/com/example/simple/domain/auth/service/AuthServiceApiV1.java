@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.dto.ResponseDTO;
 import com.example.simple.common.exception.BadRequestException;
+import com.example.simple.common.exception.UnauthorizedException;
 import com.example.simple.domain.auth.dto.ReqJoinDTO;
 import com.example.simple.domain.auth.dto.ReqLoginDTO;
 import com.example.simple.domain.auth.dto.ReqUpdateDTO;
@@ -107,6 +108,10 @@ public class AuthServiceApiV1 {
         public ResponseEntity<ResponseDTO<?>> update(ReqUpdateDTO dto, HttpSession session) {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
+
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인 하지 않았습니다");
+                }
 
                 if (!dto.getUser().getCheckpw().equals(loginDTO.getUser().getPassword())) {
                         throw new BadRequestException("비밀번호를 확인해주세요");
