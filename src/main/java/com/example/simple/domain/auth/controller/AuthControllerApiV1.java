@@ -34,7 +34,7 @@ public class AuthControllerApiV1 {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<ResponseDTO<?>> update(@RequestBody ReqUpdateDTO dto, HttpSession session) {
+    public ResponseEntity<ResponseDTO<?>> update(@RequestBody @Valid ReqUpdateDTO dto, HttpSession session) {
 
         return authServiceApiV1.update(dto, session);
     }
