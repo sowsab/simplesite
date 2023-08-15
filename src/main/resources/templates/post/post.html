@@ -44,7 +44,6 @@
         justify-content: flex-end;
         align-items: center;
       }
-
     </style>
     <title>Document</title>
     <script th:inline="javascript">
@@ -266,12 +265,12 @@
           <th>아이디</th>
           <th>내용</th>
           <th>글 쓴 시간</th>
-          <th>업데이트 시간</th>
+
           <tr th:each="commentDTO : ${dto.reqPostDTO.resCommentDTOList}">
             <td th:text="${commentDTO.userId}">글쓴이</td>
             <td th:text="${commentDTO.content}">내용</td>
             <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
-            <td th:text="${commentDTO.updateDate}">업데이트 시간</td>
+
             <td
               th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
             >
@@ -295,6 +294,7 @@
             </td>
           </tr>
         </table>
+      </div>
     </div>
   </body>
 </html>
