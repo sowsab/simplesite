@@ -1,37 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
-      const goMain = () => {
-        window.location.href = "/";
-      };
-
       const goUserDetail = (idx) => {
         window.location.href = "/auth/user/admin/user/" + idx;
       };
     </script>
   </head>
   <body>
-    <button onclick="goMain()">홈으로</button>
-    <h1>관리자 페이지</h1>
-    <h2>유저 리스트</h2>
-    <table border="1">
-      <th>유저 번호</th>
-      <th>유저 아이디</th>
-      <th>어드민</th>
-      <tr
-        th:onclick="goUserDetail([[${userList.idx}]])"
-        th:each="userList : ${dto.userList}"
-      >
-        <td><span th:text="${userList.idx}">1</span></td>
-        <td>
-          <span th:text="${userList.id}">admin</span>
-        </td>
-        <td><span th:if="${userList.roleList.contains('ADMIN')}">O</span></td>
-      </tr>
-    </table>
+    <div layout:fragment="content">
+      <h1>관리자 페이지</h1>
+      <h2>유저 리스트</h2>
+      <table border="1">
+        <th>유저 번호</th>
+        <th>유저 아이디</th>
+        <th>어드민</th>
+        <tr
+          th:onclick="goUserDetail([[${userList.idx}]])"
+          th:each="userList : ${dto.userList}"
+        >
+          <td><span th:text="${userList.idx}">1</span></td>
+          <td>
+            <span th:text="${userList.id}">admin</span>
+          </td>
+          <td><span th:if="${userList.roleList.contains('ADMIN')}">O</span></td>
+        </tr>
+      </table>
+    </div>
   </body>
 </html>

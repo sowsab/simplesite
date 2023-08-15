@@ -3,6 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      div {
+        margin: 5px;
+        border: 0px;
+        padding: 0px;
+        border-style: solid;
+      }
+
+      .postinfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .posttime {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      #post {
+        margin: 5px;
+        border: 3px;
+        padding: 5px;
+        border-style: solid;
+        border-color: black;
+      }
+
+      #commentContent {
+        margin: 5px;
+        border: 3px;
+        padding: 5px;
+        border-style: solid;
+        border-color: black;
+      }
+
+      .postbutton {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+    </style>
     <title>Document</title>
     <script th:inline="javascript">
       const updateComment = (idx) => {
@@ -41,7 +84,7 @@
           return false;
         }
 
-        if (comment.value.trim() === "" || comment.value.trim() === null) {
+        if (comment.value === "" || comment.value === null) {
           alert("댓글을 입력해주세요");
           return false;
         }
@@ -55,7 +98,7 @@
 
         const dto = {
           comment: {
-            content: document.getElementById("comment").value,
+            content: document.getElementById("commentInput").value,
             postIdx: idx,
           },
         };
@@ -156,60 +199,69 @@
   </head>
   <body>
     <div layout:fragment="content">
-      <h1><span th:text="${dto.reqPostDTO.title}">제목</span></h1>
-      <div>글쓴이: <span th:text="${dto.reqPostDTO.userId}">test</span></div>
+      <div id="post">
+        <h1><span th:text="${dto.reqPostDTO.title}">제목</span></h1>
+        <div class="postinfo">
+          <div>
+            글쓴이: <span th:text="${dto.reqPostDTO.userId}">test</span>
+          </div>
 
-      <div>
-        <span th:text="${dto.reqPostDTO.content}">내용</span>
-      </div>
-      <div>
-        글 쓴 시간 : <span th:text="${dto.reqPostDTO.createDate}">오늘</span>
-      </div>
-      <div>
-        업데이트 시간 <span th:text="${dto.reqPostDTO.updateDate}"></span>
-      </div>
-
-      <div
-        th:if="${session != null and session.dto != null and dto.reqPostDTO.userIdx == session.dto.user.idx}"
-      >
-        <button th:onclick="goPostUpdate([[${dto.reqPostDTO.idx}]])">
-          게시글 수정
-        </button>
-      </div>
-      <div
-        th:if="${session != null and session.dto != null and dto.reqPostDTO.userIdx == session.dto.user.idx}"
-      >
-        <button th:onclick="postDelete([[${dto.reqPostDTO.idx}]])">
-          게시글 삭제
-        </button>
-      </div>
-
-      <div
-        th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
-      >
-        <button th:onclick="adminPostDelete([[${dto.reqPostDTO.idx}]])">
-          관리자 삭제
-        </button>
-      </div>
-      <div>
-        <h2>덧글</h2>
-
+          <div class="posttime">
+            <div>
+              글 쓴 시간 :
+              <span th:text="${dto.reqPostDTO.createDate}">오늘</span>
+            </div>
+            <div th:if="${dto.reqPostDTO.updateDate != null}">
+              업데이트 시간 <span th:text="${dto.reqPostDTO.updateDate}"></span>
+            </div>
+          </div>
+        </div>
         <div>
-          <textarea
-            th:if="${session.dto != null}"
-            id="comment"
-            name="comment"
-          ></textarea>
-          <button
-            th:if="${session.dto != null}"
-            th:onclick="commentWrite([[${dto.reqPostDTO.idx}]])"
+          <span th:text="${dto.reqPostDTO.content}">내용</span>
+        </div>
+
+        <div class="postbutton">
+          <div
+            th:if="${session != null and session.dto != null and dto.reqPostDTO.userIdx == session.dto.user.idx}"
           >
-            덧글 쓰기
-          </button>
+            <button th:onclick="goPostUpdate([[${dto.reqPostDTO.idx}]])">
+              게시글 수정
+            </button>
+          </div>
+          <div
+            th:if="${session != null and session.dto != null and dto.reqPostDTO.userIdx == session.dto.user.idx}"
+          >
+            <button th:onclick="postDelete([[${dto.reqPostDTO.idx}]])">
+              게시글 삭제
+            </button>
+          </div>
+          <div
+            th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
+          >
+            <button th:onclick="adminPostDelete([[${dto.reqPostDTO.idx}]])">
+              관리자 삭제
+            </button>
+          </div>
         </div>
       </div>
 
-      <div>
+      <div id="comment">
+        <div>
+          <h2>덧글</h2>
+          <div>
+            <textarea
+              th:if="${session.dto != null}"
+              id="commentInput"
+              name="commentInput"
+            ></textarea>
+            <button
+              th:if="${session.dto != null}"
+              th:onclick="commentWrite([[${dto.reqPostDTO.idx}]])"
+            >
+              덧글 쓰기
+            </button>
+          </div>
+        </div>
         <table border="0">
           <th>아이디</th>
           <th>내용</th>
@@ -243,8 +295,6 @@
             </td>
           </tr>
         </table>
-      </div>
     </div>
-    
   </body>
 </html>
