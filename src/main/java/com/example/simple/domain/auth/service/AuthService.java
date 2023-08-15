@@ -48,10 +48,10 @@ public class AuthService {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
-                List<PostEntity> postEntityList = postRepository.findByUserEntity_Idx(loginDTO.getUser().getIdx());
+                List<PostEntity> postEntityList = postRepository.findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(loginDTO.getUser().getIdx());
 
                 List<CommentEntity> commentEntityList = commentRepository
-                                .findByUserEntity_Idx(loginDTO.getUser().getIdx());
+                                .findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(loginDTO.getUser().getIdx());
 
                 ResGetPostCommentDTO dto = ResGetPostCommentDTO.convert(postEntityList, commentEntityList);
 
@@ -82,9 +82,9 @@ public class AuthService {
                         throw new UnauthorizedException("관리자 권한이 없습니다");
                 }
 
-                List<PostEntity> postEntityList = postRepository.findByUserEntity_Idx(userIdx);
+                List<PostEntity> postEntityList = postRepository.findByUserEntity_IdxOrderByIdxDesc(userIdx);
 
-                List<CommentEntity> commentEntityList = commentRepository.findByUserEntity_Idx(userIdx);
+                List<CommentEntity> commentEntityList = commentRepository.findByUserEntity_IdxOrderByIdxDesc(userIdx);
 
                 Optional<UserEntity> userEntityOptional = userRepository.findByIdx(userIdx);
 

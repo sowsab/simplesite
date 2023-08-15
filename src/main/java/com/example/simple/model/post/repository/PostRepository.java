@@ -13,15 +13,22 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     List<PostEntity> findByContent(String content);
 
     List<PostEntity> findByUserEntity_Idx(Long userIdx);
-
+    
     List<PostEntity> findByTitleContaining(String title);
-
+    
     List<PostEntity> findByContentContaining(String content);
-
+    
     List<PostEntity> findByTitleContainingOrContentContaining(String title, String content);
-
+    
     Optional<PostEntity> findByIdxAndDeleteDateIsNull(Long idx);
-
+    
     List<PostEntity> findByDeleteDateIsNull();
+    
+    List<PostEntity> findByDeleteDateIsNullOrderByIdxDesc();
+    
+    List<PostEntity> findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(Long userIdx);
+
+    List<PostEntity> findByUserEntity_IdxOrderByIdxDesc(Long userIdx);
+
 
 }

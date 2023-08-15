@@ -32,7 +32,7 @@ public class MainService {
 
     public ResMainPostDTO getPostListData() {
 
-        List<PostEntity> postEntityList = postRepository.findByDeleteDateIsNull();
+        List<PostEntity> postEntityList = postRepository.findByDeleteDateIsNullOrderByIdxDesc();
 
         // List<MainPostDTO> mainPostDTOList = new ArrayList<>();
 
