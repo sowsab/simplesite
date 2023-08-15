@@ -1,89 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-    <h3 th:if="${session.dto == null}" onclick="goLogin()">로그인</h3>
-    <h3>
-      <span th:if="${session.dto == null}">손님</span>
-      <span
-        th:if="${session.dto != null}"
-        th:text="${session.dto.user.id}"
-      ></span>
-      안녕하세요
-      <button th:if="${session.dto != null}" onclick="goUpdate()">
-        정보 수정하기
-      </button>
-      <button th:if="${session.dto != null}" onclick="goUserDetail()">
-        게시한 글 보기
-      </button>
-    </h3>
-    <h3>
-      <button
-        th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
-        onclick="goAdminMain()"
-      >
-        관리자 페이지로
-      </button>
-    </h3>
-    <h3 th:if="${session.dto != null}" onclick="goLogout()">로그아웃</h3>
-    <button th:if="${session.dto != null}" onclick="goPostWrite()">
-      글쓰기
-    </button>
-    <h1>게시판</h1>
-    <table border="1">
-      <th>게시글 번호</th>
-      <th>게시글 제목</th>
-      <th>글 쓴 시간</th>
-      <th>글쓴이</th>
-      <tr
-        th:each="postList : ${dto.mainPostDTOList}"
-        
-      >
-        <td th:onclick="goPost([[${postList.idx}]])"><span th:text="${postList.idx}"></span></td>
-        <td th:onclick="goPost([[${postList.idx}]])">
-          <span th:text="${postList.title}"></span>
-        </td>
-        <td th:onclick="goPost([[${postList.idx}]])"><span th:text="${postList.createDate}"></span></td>
-        <td th:onclick="goPostUser([[${postList.userIdx}]])"><span th:text="${postList.userId}"></span></td>
-      </tr>
-    </table>
-
-    <script>
+    <script th:inline="javascript">
       const goPost = (idx) => {
         window.location.href = "post/" + idx;
       };
 
       const goPostUser = (idx) => {
         window.location.href = "post/user/" + idx;
-      }
+      };
 
       const goPostWrite = () => {
         window.location.href = "post-write";
       };
-
-      const goLogin = () => {
-        window.location.href = "auth/login";
-      };
-
-      const goLogout = () => {
-        window.location.href = "auth/logout";
-      };
-
-      const goUpdate = () => {
-        window.location.href = "auth/update";
-      };
-
-      const goUserDetail = () => {
-        window.location.href = "auth/user/detail";
-      };
-
-      const goAdminMain = () => {
-        window.location.href = "auth/user/admin";
-      };
     </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <button th:if="${session.dto != null}" onclick="goPostWrite()">
+        글쓰기
+      </button>
+      <h1>게시판</h1>
+      <table border="1">
+        <th>게시글 번호</th>
+        <th>게시글 제목</th>
+        <th>글 쓴 시간</th>
+        <th>글쓴이</th>
+        <tr th:each="postList : ${dto.mainPostDTOList}">
+          <td th:onclick="goPost([[${postList.idx}]])">
+            <span th:text="${postList.idx}"></span>
+          </td>
+          <td th:onclick="goPost([[${postList.idx}]])">
+            <span th:text="${postList.title}"></span>
+          </td>
+          <td th:onclick="goPost([[${postList.idx}]])">
+            <span th:text="${postList.createDate}"></span>
+          </td>
+          <td th:onclick="goPostUser([[${postList.userIdx}]])">
+            <span th:text="${postList.userId}"></span>
+          </td>
+        </tr>
+      </table>
+    </div>
   </body>
 </html>

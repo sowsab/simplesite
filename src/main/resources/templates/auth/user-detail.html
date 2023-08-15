@@ -1,51 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-
-    <button onclick="goMain()">메인 페이지로</button>
-
-    <h1><span th:text="${session.dto.user.id}">손님</span>이 작성한 글</h1>
-
-    <h1>게시글 리스트</h1>
-
-    <table border="1">
-      <th>게시글 번호</th>
-      <th>게시글 제목</th>
-      <tr th:each="postList : ${dto.postList}">
-        <td><span th:text="${postList.idx}">1</span></td>
-        <td>
-          <span th:onclick="goPost([[${postList.idx}]])" th:text="${postList.title}">안녕하세요</span>
-        </td>
-      </tr>
-    </table>
-
-    <h1>덧글 리스트</h1>
-
-    <table border="1">
-      <th>덧글 번호</th>
-      <th>게시한 덧글</th>
-      <tr th:each="commentList : ${dto.commentList}">
-        <td><span th:text="${commentList.idx}">1</span></td>
-        <td>
-          <span th:onclick="goPost([[${commentList.postIdx}]])" th:text="${commentList.content}">안녕하세요</span>
-        </td>
-      </tr>
-    </table>
-
     <script th:inline="javascript">
-      const goMain = () => {
-        window.location.href = "/";
-      };
-
       const goPost = (idx) => {
         window.location.href = "/post/" + idx;
-      }
-
+      };
     </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <h1><span th:text="${session.dto.user.id}">손님</span>이 작성한 글</h1>
+
+      <h1>게시글 리스트</h1>
+
+      <table border="1">
+        <th>게시글 번호</th>
+        <th>게시글 제목</th>
+        <tr th:each="postList : ${dto.postList}">
+          <td><span th:text="${postList.idx}">1</span></td>
+          <td>
+            <span
+              th:onclick="goPost([[${postList.idx}]])"
+              th:text="${postList.title}"
+              >안녕하세요</span
+            >
+          </td>
+        </tr>
+      </table>
+
+      <h1>덧글 리스트</h1>
+
+      <table border="1">
+        <th>덧글 번호</th>
+        <th>게시한 덧글</th>
+        <tr th:each="commentList : ${dto.commentList}">
+          <td><span th:text="${commentList.idx}">1</span></td>
+          <td>
+            <span
+              th:onclick="goPost([[${commentList.postIdx}]])"
+              th:text="${commentList.content}"
+              >안녕하세요</span
+            >
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    
   </body>
 </html>

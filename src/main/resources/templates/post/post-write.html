@@ -1,16 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-    <h1>게시글 쓰기</h1>
-    <div>제목 <input type="text" name="title" id="title" /></div>
-    <div>내용 <textarea name="content" id="content"></textarea></div>
-    <div><button onclick="reqPost()">글쓰기</button></div>
-
     <script>
       const checkInput = () => {
         title = document.getElementById("title");
@@ -55,5 +48,15 @@
           });
       };
     </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <h1>게시글 쓰기</h1>
+      <div>제목 <input type="text" name="title" id="title" /></div>
+      <div>내용 <textarea name="content" id="content"></textarea></div>
+      <div><button onclick="reqPost()">글쓰기</button></div>
+    </div>
+
+    
   </body>
 </html>

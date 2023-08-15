@@ -1,63 +1,64 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-    <h1>댓글 수정</h1>
-    <div>
-      <textarea
-        th:text="${dto.reqGetCommentUpdateDTO.content}"
-        id="content"
-        name="content"
-      ></textarea>
-      <button
-        th:onclick="updateComment([[${dto.reqGetCommentUpdateDTO.idx}]], [[${dto.reqGetCommentUpdateDTO.postIdx}]])"
-      >
-        수정하기
-      </button>
-    </div>
-  </body>
+    <script>
+      const checkInput = () => {
+        content = document.getElementById("content");
 
-  <script>
-    const checkInput = () => {
-      content = document.getElementById("content");
-
-      if (content.value === "" || content.value === null) {
-        alert("내용을 입력해주세요");
-        return false;
-      }
-      return true;
-    };
-
-    const updateComment = (idx, postIdx) => {
-      if (!checkInput()) {
-        return;
-      }
-      const dto = {
-        comment: {
-          idx: idx,
-          content: document.getElementById("content").value,
-        },
+        if (content.value === "" || content.value === null) {
+          alert("내용을 입력해주세요");
+          return false;
+        }
+        return true;
       };
 
-      fetch("/api/v1/post/comment/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(dto),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          alert(result.message);
+      const updateComment = (idx, postIdx) => {
+        if (!checkInput()) {
+          return;
+        }
+        const dto = {
+          comment: {
+            idx: idx,
+            content: document.getElementById("content").value,
+          },
+        };
 
-          if (result.code === 0) {
-            location.replace("/post/" + postIdx);
-          }
-        });
-    };
-  </script>
+        fetch("/api/v1/post/comment/update", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(dto),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            alert(result.message);
+
+            if (result.code === 0) {
+              location.replace("/post/" + postIdx);
+            }
+          });
+      };
+    </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <h1>댓글 수정</h1>
+      <div>
+        <textarea
+          th:text="${dto.reqGetCommentUpdateDTO.content}"
+          id="content"
+          name="content"
+        ></textarea>
+        <button
+          th:onclick="updateComment([[${dto.reqGetCommentUpdateDTO.idx}]], [[${dto.reqGetCommentUpdateDTO.postIdx}]])"
+        >
+          수정하기
+        </button>
+      </div>
+    </div>
+  </body>
 </html>

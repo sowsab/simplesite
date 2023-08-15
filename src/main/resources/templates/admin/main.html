@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script>
+      const goMain = () => {
+        window.location.href = "/";
+      };
+
+      const goUserDetail = (idx) => {
+        window.location.href = "/auth/user/admin/user/" + idx;
+      };
+    </script>
   </head>
   <body>
     <button onclick="goMain()">홈으로</button>
@@ -13,7 +22,10 @@
       <th>유저 번호</th>
       <th>유저 아이디</th>
       <th>어드민</th>
-      <tr th:onclick="goUserDetail([[${userList.idx}]])" th:each="userList : ${dto.userList}">
+      <tr
+        th:onclick="goUserDetail([[${userList.idx}]])"
+        th:each="userList : ${dto.userList}"
+      >
         <td><span th:text="${userList.idx}">1</span></td>
         <td>
           <span th:text="${userList.id}">admin</span>
@@ -21,14 +33,5 @@
         <td><span th:if="${userList.roleList.contains('ADMIN')}">O</span></td>
       </tr>
     </table>
-    <script>
-      const goMain = () => {
-        window.location.href = "/";
-      };
-
-      const goUserDetail = (idx) => {
-        window.location.href = "/auth/user/admin/user/" + idx;
-      }
-    </script>
   </body>
 </html>

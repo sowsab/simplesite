@@ -1,42 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-    <h1>로그인</h1>
-    <div>
-      아이디
-      <input type="text" name="id" id="id" />
-    </div>
-    <div>
-      비밀번호
-      <input type="password" name="password" id="password" />
-    </div>
-    <div>
-      <button onclick="requestLogin()">로그인</button>
-    </div>
-
-    <div><button onclick="goJoin()">회원가입</button></div>
-
     <script>
-
       const goJoin = () => {
         window.location.href = "/auth/join";
       };
 
-
-      document.querySelector("#password").addEventListener("keyup", (event) => {
-        if (event.keyCode === 13) {
-          requestLogin();
-        }
-      });
-
       const checkInput = () => {
-        id = document.getElementById("id");
-        password = document.getElementById("password");
+        let id = document.getElementById("id");
+        let password = document.getElementById("password");
 
         if (id.value === "" || id.value === null) {
           alert("아이디를 입력해주세요");
@@ -77,6 +52,31 @@
             }
           });
       };
+      document.querySelector("#password").addEventListener("keyup", (event) => {
+        if (event.keyCode === 13) {
+          requestLogin();
+        }
+      });
     </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <h1>로그인</h1>
+      <div>
+        아이디
+        <input type="text" name="id" id="id" />
+      </div>
+      <div>
+        비밀번호
+        <input type="password" name="password" id="password" />
+      </div>
+      <div>
+        <button onclick="requestLogin()">로그인</button>
+      </div>
+
+      <div><button onclick="goJoin()">회원가입</button></div>
+    </div>
+
+    
   </body>
 </html>

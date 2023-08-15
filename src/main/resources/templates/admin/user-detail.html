@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script th:inline="javascript">
+      const goMain = () => {
+        window.location.href = "/";
+      };
+
+      const goPost = (idx) => {
+        window.location.href = "/post/" + idx;
+      }
+
+    </script>
   </head>
+  
   <body>
 
     <button onclick="goMain()">메인 페이지로</button>
@@ -37,15 +48,6 @@
       </tr>
     </table>
 
-    <script th:inline="javascript">
-      const goMain = () => {
-        window.location.href = "/";
-      };
-
-      const goPost = (idx) => {
-        window.location.href = "/post/" + idx;
-      }
-
-    </script>
+    
   </body>
 </html>

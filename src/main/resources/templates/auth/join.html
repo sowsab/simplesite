@@ -1,50 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{layout}" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-    <h1>회원 가입</h1>
-    <div>
-      이메일
-      <input
-        type="email"
-        name="email"
-        id="email"
-        placeholder="이메일을 입력해주세요"
-      />
-    </div>
-    <div>
-      아이디
-      <input
-        type="text"
-        name="id"
-        id="id"
-        placeholder="아이디를 입력해주세요"
-      />
-    </div>
-    <div>
-      비밀번호
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="비밀번호를 입력해주세요"
-      />
-    </div>
-    <div>
-      비번확인
-      <input
-        type="password"
-        name="checkpw"
-        id="checkpw"
-        placeholder="앞의 입력한 비밀번호를 입력해주세요"
-      />
-    </div>
-    <div><button onclick="reqJoin()">가입</button></div>
-
     <script>
       const checkInput = () => {
         email = document.getElementById("email");
@@ -70,7 +29,7 @@
           alert("비밀번호를 입력해 주세요");
           return false;
         } else if (password.value !== checkpw.value) {
-          alert("비밀번호를 확인해 주세요")
+          alert("비밀번호를 확인해 주세요");
           return false;
         }
         return true;
@@ -86,7 +45,7 @@
             email: document.getElementById("email").value,
             id: document.getElementById("id").value,
             password: document.getElementById("password").value,
-            checkpw: document.getElementById("checkpw").value
+            checkpw: document.getElementById("checkpw").value,
           },
         };
 
@@ -107,5 +66,47 @@
           });
       };
     </script>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <h1>회원 가입</h1>
+      <div>
+        이메일
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="이메일을 입력해주세요"
+        />
+      </div>
+      <div>
+        아이디
+        <input
+          type="text"
+          name="id"
+          id="id"
+          placeholder="아이디를 입력해주세요"
+        />
+      </div>
+      <div>
+        비밀번호
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="비밀번호를 입력해주세요"
+        />
+      </div>
+      <div>
+        비번확인
+        <input
+          type="password"
+          name="checkpw"
+          id="checkpw"
+          placeholder="앞의 입력한 비밀번호를 입력해주세요"
+        />
+      </div>
+      <div><button onclick="reqJoin()">가입</button></div>
+    </div>
   </body>
 </html>

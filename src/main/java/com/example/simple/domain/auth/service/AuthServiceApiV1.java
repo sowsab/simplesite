@@ -142,6 +142,8 @@ public class AuthServiceApiV1 {
 
                 userRepository.save(userEntity);
 
+                session.invalidate();
+
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
                                                 .code(0)

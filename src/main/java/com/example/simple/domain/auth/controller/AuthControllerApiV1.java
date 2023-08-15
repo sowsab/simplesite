@@ -37,6 +37,7 @@ public class AuthControllerApiV1 {
     public ResponseEntity<ResponseDTO<?>> update(@RequestBody @Valid ReqUpdateDTO dto, HttpSession session) {
 
         return authServiceApiV1.update(dto, session);
+        
     }
 
     

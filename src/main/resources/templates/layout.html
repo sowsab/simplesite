@@ -6,23 +6,21 @@
     <title>layout</title>
     <style>
       div {
-        margin: 0px;
-        border: 3px;
+        margin: 10px;
+        border: 0px;
         padding: 0px;
         border-style: solid;
-        border-color: red;
       }
       body {
         display: grid;
         grid-template-columns: 1fr 6fr 1fr;
-
       }
       header {
         margin: 0px;
-        border: 3px;
+        border: 0px;
         padding: 0px;
         border-style: solid;
-        border-color: red;
+        border-color: black;
         height: 50px;
         grid-column-start: 1;
         grid-column-end: 4;
@@ -32,38 +30,38 @@
       }
       nav {
         margin: 0px;
-        border: 3px;
+        border: 0px;
         padding: 0px;
         /* height: 50px; */
         border-style: solid;
         border-color: red;
         grid-column-start: 1;
         grid-column-end: 4;
-    }
-    aside {
-      margin: 0px;
-      border: 3px;
-      padding: 0px;
-      border-style: solid;
-      border-color: red;
-      height: 700px;
-    }
+      }
+      aside {
+        margin: 0px;
+        border: 0px;
+        padding: 0px;
+        border-style: solid;
+        border-color: black;
+        height: 700px;
+      }
       section {
         margin: 0px;
         border: 3px;
         padding: 0px;
         border-style: solid;
-        border-color: red;
+        border-color: black;
         height: 700px;
         grid-column-start: 2;
         grid-column-end: 3;
       }
       footer {
         margin: 0px;
-        border: 3px;
+        border: 0px;
         padding: 0px;
         border-style: solid;
-        border-color: red;
+        border-color: black;
         height: 50px;
         grid-column-start: 1;
         grid-column-end: 4;
@@ -76,7 +74,7 @@
   <body>
     <header>
       <div>
-        <button>메인 페이지</button>
+        <button onclick="goMain()">메인 페이지</button>
       </div>
       <div>
         <span th:if="${session.dto == null}" onclick="goLogin()">로그인</span>
@@ -92,6 +90,10 @@
           게시한 글 보기
         </button>
 
+        <button th:if="${session.dto != null}" onclick="goLogout()">
+          로그아웃
+        </button>
+
         <button
           th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
           onclick="goAdminMain()"
@@ -104,31 +106,35 @@
 
     <aside></aside>
     <section>
-        <div th:replace="~{main :: content}"></div>
+      <th:block layout:fragment="content"></th:block>
     </section>
     <aside></aside>
     <footer>
       <div>스프링부트로 만들었음</div>
     </footer>
-    <script>
-      const goLogin = () => {
-        window.location.href = "auth/login";
-      };
+      <script th:fragment="scripts">
+        const goMain = () => {
+          window.location.href = "/";
+        };
 
-      const goLogout = () => {
-        window.location.href = "auth/logout";
-      };
-      const goUpdate = () => {
-        window.location.href = "auth/update";
-      };
+        const goLogin = () => {
+          window.location.href = "/auth/login";
+        };
 
-      const goUserDetail = () => {
-        window.location.href = "auth/user/detail";
-      };
+        const goLogout = () => {
+          window.location.href = "/auth/logout";
+        };
+        const goUpdate = () => {
+          window.location.href = "/auth/update";
+        };
 
-      const goAdminMain = () => {
-        window.location.href = "auth/user/admin";
-      };
-    </script>
+        const goUserDetail = () => {
+          window.location.href = "/auth/user/detail";
+        };
+
+        const goAdminMain = () => {
+          window.location.href = "/auth/user/admin";
+        };
+      </script>
   </body>
 </html>
