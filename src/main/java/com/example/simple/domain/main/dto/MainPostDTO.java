@@ -1,5 +1,7 @@
 package com.example.simple.domain.main.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,5 +16,6 @@ public class MainPostDTO {
     private Long idx;
     private String title;
     private String userId;
+    private LocalDateTime createDate;
 
 }

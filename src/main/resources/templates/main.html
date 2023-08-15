@@ -37,6 +37,7 @@
     <table border="1">
       <th>게시글 번호</th>
       <th>게시글 제목</th>
+      <th>글 쓴 시간</th>
       <th>글쓴이</th>
       <tr th:each="postList : ${dto.mainPostDTOList}">
         <td><span th:text="${postList.idx}"></span></td>
@@ -46,6 +47,7 @@
             th:text="${postList.title}"
           ></span>
         </td>
+        <td><span th:text="${postList.createDate}"></span></td>
         <td><span th:text="${postList.userId}"></span></td>
       </tr>
     </table>

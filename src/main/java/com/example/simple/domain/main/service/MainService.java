@@ -54,6 +54,7 @@ public class MainService {
                 .map(postEntity -> MainPostDTO.builder()
                         .idx(postEntity.getIdx())
                         .title(postEntity.getTitle())
+                        .createDate(postEntity.getCreateDate())
                         .userId(postEntity.getUserEntity().getId())
                         .build())
                 .toList();
