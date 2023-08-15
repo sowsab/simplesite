@@ -10,6 +10,7 @@ import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO;
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
+import com.example.simple.domain.main.dto.ResPostUserDTO;
 import com.example.simple.domain.main.service.MainService;
 
 import jakarta.servlet.http.HttpSession;
@@ -78,6 +79,15 @@ public class MainController {
             return "redirect:/";
         }
 
+    }
+
+    @GetMapping("/post/user/{userIdx}")
+    public String getUserPostPage(Model model, @PathVariable Long userIdx) {
+        ResPostUserDTO dto = mainService.getPostUser(userIdx);
+
+        model.addAttribute("dto", dto);
+
+        return "post/post-user";
     }
 
 }

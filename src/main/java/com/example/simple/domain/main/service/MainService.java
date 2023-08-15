@@ -15,6 +15,8 @@ import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO;
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
+import com.example.simple.domain.main.dto.ResPostUserDTO;
+import com.example.simple.domain.main.dto.ResPostUserDTO.ReqPostUserDTO;
 import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
@@ -55,6 +57,7 @@ public class MainService {
                         .idx(postEntity.getIdx())
                         .title(postEntity.getTitle())
                         .createDate(postEntity.getCreateDate())
+                        .userIdx(postEntity.getUserEntity().getIdx())
                         .userId(postEntity.getUserEntity().getId())
                         .build())
                 .toList();
@@ -173,6 +176,21 @@ public class MainService {
 
         return new ResGetCommentUpdateDataDTO(reqGetCommentUpdateDTO);
 
+    }
+
+    public ResPostUserDTO getPostUser(Long userIdx) {
+        List<PostEntity> postEntityList = postRepository.findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(userIdx);
+
+        List<ReqPostUserDTO> reqPostUserDTOList = postEntityList.stream()
+                .map(postEntity -> ReqPostUserDTO.builder()
+                        .idx(postEntity.getIdx())
+                        .title(postEntity.getTitle())
+                        .createDate(postEntity.getCreateDate())
+                        .userId(postEntity.getUserEntity().getId())
+                        .build())
+                .toList();
+
+        return new ResPostUserDTO(reqPostUserDTOList);
     }
 
 }

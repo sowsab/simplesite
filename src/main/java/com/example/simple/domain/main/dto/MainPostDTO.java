@@ -15,6 +15,7 @@ public class MainPostDTO {
     
     private Long idx;
     private String title;
+    private Long userIdx;
     private String userId;
     private LocalDateTime createDate;
 

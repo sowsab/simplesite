@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <table border="1">
+      <th>게시글 번호</th>
+      <th>게시글 제목</th>
+      <th>글 쓴 시간</th>
+      <th>글쓴이</th>
+      <tr
+        th:each="postList : ${dto.reqPostUserDTOList}"
+        th:onclick="goPost([[${postList.idx}]])"
+      >
+        <td><span th:text="${postList.idx}">1</span></td>
+        <td>
+          <span th:text="${postList.title}">안녕하세요</span>
+        </td>
+        <td th:text="${postList.createDate}"></td>
+        <td th:text="${postList.userId}">admin</td>
+      </tr>
+    </table>
+
+    <script th:inline="javascript">
+      const goPost = (idx) => {
+        window.location.href = "post/" + idx;
+      };
+    </script>
+  </body>
+</html>

@@ -39,16 +39,16 @@
       <th>게시글 제목</th>
       <th>글 쓴 시간</th>
       <th>글쓴이</th>
-      <tr th:each="postList : ${dto.mainPostDTOList}">
-        <td><span th:text="${postList.idx}"></span></td>
-        <td>
-          <span
-            th:onclick="goPost([[${postList.idx}]])"
-            th:text="${postList.title}"
-          ></span>
+      <tr
+        th:each="postList : ${dto.mainPostDTOList}"
+        
+      >
+        <td th:onclick="goPost([[${postList.idx}]])"><span th:text="${postList.idx}"></span></td>
+        <td th:onclick="goPost([[${postList.idx}]])">
+          <span th:text="${postList.title}"></span>
         </td>
-        <td><span th:text="${postList.createDate}"></span></td>
-        <td><span th:text="${postList.userId}"></span></td>
+        <td th:onclick="goPost([[${postList.idx}]])"><span th:text="${postList.createDate}"></span></td>
+        <td th:onclick="goPostUser([[${postList.userIdx}]])"><span th:text="${postList.userId}"></span></td>
       </tr>
     </table>
 
@@ -56,6 +56,10 @@
       const goPost = (idx) => {
         window.location.href = "post/" + idx;
       };
+
+      const goPostUser = (idx) => {
+        window.location.href = "post/user/" + idx;
+      }
 
       const goPostWrite = () => {
         window.location.href = "post-write";
