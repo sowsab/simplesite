@@ -19,8 +19,9 @@
 
       .posttime {
         display: flex;
+        flex-direction: column;
         justify-content: flex-end;
-        align-items: center;
+        align-items: flex-end;
       }
 
       #post {
@@ -233,7 +234,7 @@
               <span th:text="${dto.reqPostDTO.createDate}">오늘</span>
             </div>
             <div th:if="${dto.reqPostDTO.updateDate != null}">
-              업데이트 시간 <span th:text="${dto.reqPostDTO.updateDate}"></span>
+              업데이트 시간 : <span th:text="${dto.reqPostDTO.updateDate}"></span>
             </div>
           </div>
         </div>
