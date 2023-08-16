@@ -21,6 +21,8 @@ import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
 import com.example.simple.model.post.repository.PostRepository;
+import com.example.simple.model.user.entity.UserEntity;
+import com.example.simple.model.user.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
@@ -180,17 +183,14 @@ public class MainService {
 
     public ResPostUserDTO getPostUser(Long userIdx) {
         List<PostEntity> postEntityList = postRepository.findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(userIdx);
+        
+        Optional<UserEntity> userEntityOptional = userRepository.findByIdx(userIdx);
+        
+        UserEntity userEntity = userEntityOptional.get();
+        
+        ResPostUserDTO dto = ResPostUserDTO.convert(userEntity, postEntityList);
 
-        List<ReqPostUserDTO> reqPostUserDTOList = postEntityList.stream()
-                .map(postEntity -> ReqPostUserDTO.builder()
-                        .idx(postEntity.getIdx())
-                        .title(postEntity.getTitle())
-                        .createDate(postEntity.getCreateDate())
-                        .userId(postEntity.getUserEntity().getId())
-                        .build())
-                .toList();
-
-        return new ResPostUserDTO(reqPostUserDTOList);
+        return dto;
     }
 
 }
