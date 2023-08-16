@@ -16,7 +16,6 @@ import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.dto.ResPostUserDTO;
-import com.example.simple.domain.main.dto.ResPostUserDTO.ReqPostUserDTO;
 import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
