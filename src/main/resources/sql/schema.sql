@@ -27,7 +27,7 @@ CREATE TABLE `user_role` (
 CREATE TABLE `post` (
   `idx` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
-  `content` varchar(100) NOT NULL,
+  `content` varchar(255) NOT NULL,
   `user_idx` int(11) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_date` timestamp NULL DEFAULT NULL,
