@@ -1,54 +1,104 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script th:inline="javascript">
-      const goPost = (idx) => {
-        window.location.href = "/post/" + idx;
-      };
-    </script>
-  </head>
-  <body>
-    <div layout:fragment="content">
-      <h1><span th:text="${session.dto.user.id}">손님</span>이 작성한 글</h1>
 
-      <h1>게시글 리스트</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    div {
+      margin: 3px;
+      border: 0px;
+      padding: 0px;
+      border-style: solid;
+    }
 
-      <table border="1">
-        <th>게시글 번호</th>
-        <th>게시글 제목</th>
-        <tr th:each="postList : ${dto.postList}">
-          <td><span th:text="${postList.idx}">1</span></td>
-          <td>
-            <span
-              th:onclick="goPost([[${postList.idx}]])"
-              th:text="${postList.title}"
-              >안녕하세요</span
-            >
-          </td>
-        </tr>
-      </table>
+    #postcomment {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
 
-      <h1>덧글 리스트</h1>
+    .list {
+      border: 3px;
+      border-style: solid;
+      display: flex;
+      flex-direction: column;
+    }
 
-      <table border="1">
-        <th>덧글 번호</th>
-        <th>게시한 덧글</th>
-        <tr th:each="commentList : ${dto.commentList}">
-          <td><span th:text="${commentList.idx}">1</span></td>
-          <td>
-            <span
-              th:onclick="goPost([[${commentList.postIdx}]])"
-              th:text="${commentList.content}"
-              >안녕하세요</span
-            >
-          </td>
-        </tr>
-      </table>
+    .table-header {
+      gap: 5px;
+      display: grid;
+      grid-template-columns: 2fr 5fr;
+    }
+
+    .table-row {
+      gap: 5px;
+      display: grid;
+      grid-template-columns: 2fr 5fr;
+    }
+
+    .table-cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  </style>
+  <title>Document</title>
+  <script th:inline="javascript">
+    const goPost = (idx) => {
+      window.location.href = "/post/" + idx;
+    };
+  </script>
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <h1><span th:text="${session.dto.user.id}">손님</span>이 작성한 글</h1>
+    <div id="postcomment">
+      <div>
+        <h1>게시글 리스트</h1>
+        <div class="list">
+          <div>
+            <div class="table-header">
+              <div class="table-cell">게시글 번호</div>
+              <div class="table-cell">게시글 제목</div>
+            </div>
+
+            <div th:each="postList : ${dto.postList}" class="table-row">
+              <div class="table-cell">
+                <span th:text="${postList.idx}">1</span>
+              </div>
+              <div class="table-content">
+                <span th:onclick="goPost([[${postList.idx}]])" th:text="${postList.title}">안녕하세요</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h1>덧글 리스트</h1>
+        <div class="list">
+          <div class="table-header">
+            <div class="table-cell">덧글 번호</div>
+            <div class="table-cell">게시한 덧글</div>
+          </div>
+        
+          <div th:each="commentList : ${dto.commentList}" class="table-row">
+            <div class="table-cell">
+              <span th:text="${commentList.idx}">1</span>
+            </div>
+            <div class="table-content">
+              <span th:onclick="goPost([[${commentList.postIdx}]])" th:text="${commentList.content}">안녕하세요</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    
-  </body>
+
+</body>
+
 </html>

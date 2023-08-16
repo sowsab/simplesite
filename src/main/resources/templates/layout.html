@@ -1,138 +1,143 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>layout</title>
-    <style>
-      div {
-        margin: 10px;
-        border: 0px;
-        padding: 0px;
-        border-style: solid;
-      }
-      body {
-        display: grid;
-        grid-template-columns: 1fr 6fr 1fr;
-      }
-      header {
-        margin: 0px;
-        border: 0px;
-        padding: 0px;
-        border-style: solid;
-        border-color: black;
-        height: 50px;
-        grid-column-start: 1;
-        grid-column-end: 4;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      nav {
-        margin: 0px;
-        border: 0px;
-        padding: 0px;
-        /* height: 50px; */
-        border-style: solid;
-        border-color: red;
-        grid-column-start: 1;
-        grid-column-end: 4;
-      }
-      aside {
-        margin: 0px;
-        border: 0px;
-        padding: 0px;
-        border-style: solid;
-        border-color: black;
-      }
-      section {
-        margin: 0px;
-        border: 3px;
-        padding: 0px;
-        border-style: solid;
-        border-color: black;
-        grid-column-start: 2;
-        grid-column-end: 3;
-      }
-      footer {
-        margin: 0px;
-        border: 0px;
-        padding: 0px;
-        border-style: solid;
-        border-color: black;
-        height: 50px;
-        grid-column-start: 1;
-        grid-column-end: 4;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div>
-        <button onclick="goMain()">메인 페이지</button>
-      </div>
-      <div>
-        <span th:if="${session.dto == null}" onclick="goLogin()">로그인</span>
-        <span
-          th:if="${session.dto != null}"
-          th:text="${session.dto.user.id}"
-        ></span>
-        <span th:if="${session.dto != null}">안녕하세요</span>
-        <button th:if="${session.dto != null}" onclick="goUpdate()">
-          정보 수정하기
-        </button>
-        <button th:if="${session.dto != null}" onclick="goUserDetail()">
-          게시한 글 보기
-        </button>
 
-        <button th:if="${session.dto != null}" onclick="goLogout()">
-          로그아웃
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    div {
+      margin: 10px;
+      border: 0px;
+      padding: 0px;
+      border-style: solid;
+    }
 
-        <button
-          th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
-          onclick="goAdminMain()"
-        >
-          관리자 페이지로
-        </button>
-      </div>
-    </header>
-    <nav></nav>
+    body {
+      display: grid;
+      grid-template-columns: 1fr 6fr 1fr;
+    }
 
-    <aside></aside>
-    <section>
-      <th:block layout:fragment="content"></th:block>
-    </section>
-    <aside></aside>
-    <footer>
-      <div>스프링부트로 만들었음</div>
-    </footer>
-      <script th:fragment="scripts">
-        const goMain = () => {
-          window.location.href = "/";
-        };
+    header {
+      margin: 0px;
+      border: 0px;
+      padding: 0px;
+      border-style: solid;
+      border-color: black;
+      height: 50px;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        const goLogin = () => {
-          window.location.href = "/auth/login";
-        };
+    nav {
+      margin: 0px;
+      border: 0px;
+      padding: 0px;
+      /* height: 50px; */
+      border-style: solid;
+      border-color: red;
+      grid-column-start: 1;
+      grid-column-end: 4;
+    }
 
-        const goLogout = () => {
-          window.location.href = "/auth/logout";
-        };
-        const goUpdate = () => {
-          window.location.href = "/auth/update";
-        };
+    aside {
+      margin: 0px;
+      border: 0px;
+      padding: 0px;
+      border-style: solid;
+      border-color: black;
+    }
 
-        const goUserDetail = () => {
-          window.location.href = "/auth/user/detail";
-        };
+    section {
+      margin: 0px;
+      border: 3px;
+      padding: 0px;
+      border-style: solid;
+      border-color: black;
+      grid-column-start: 2;
+      grid-column-end: 3;
+    }
 
-        const goAdminMain = () => {
-          window.location.href = "/auth/user/admin";
-        };
-      </script>
-  </body>
+    footer {
+      margin: 0px;
+      border: 0px;
+      padding: 0px;
+      border-style: solid;
+      border-color: black;
+      height: 50px;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  </style>
+  <title>layout</title>
+  <script th:fragment="scripts">
+    const goMain = () => {
+      window.location.href = "/";
+    };
+
+    const goLogin = () => {
+      window.location.href = "/auth/login";
+    };
+
+    const goLogout = () => {
+      window.location.href = "/auth/logout";
+    };
+    const goUpdate = () => {
+      window.location.href = "/auth/update";
+    };
+
+    const goUserDetail = () => {
+      window.location.href = "/auth/user/detail";
+    };
+
+    const goAdminMain = () => {
+      window.location.href = "/auth/user/admin";
+    };
+  </script>
+</head>
+
+<body>
+  <header>
+    <div>
+      <button onclick="goMain()">메인 페이지</button>
+    </div>
+    <div>
+      <span th:if="${session.dto == null}" onclick="goLogin()">로그인</span>
+      <span th:if="${session.dto != null}" th:text="${session.dto.user.id}"></span>
+      <span th:if="${session.dto != null}">안녕하세요</span>
+      <button th:if="${session.dto != null}" onclick="goUpdate()">
+        정보 수정하기
+      </button>
+      <button th:if="${session.dto != null}" onclick="goUserDetail()">
+        게시한 글 보기
+      </button>
+
+      <button th:if="${session.dto != null}" onclick="goLogout()">
+        로그아웃
+      </button>
+
+      <button
+        th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
+        onclick="goAdminMain()">
+        관리자 페이지로
+      </button>
+    </div>
+  </header>
+  <nav></nav>
+
+  <aside></aside>
+  <section>
+    <th:block layout:fragment="content"></th:block>
+  </section>
+  <aside></aside>
+  <footer>
+    <div>스프링부트로 만들었음</div>
+  </footer>
+</body>
+
 </html>

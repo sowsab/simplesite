@@ -1,49 +1,112 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script th:inline="javascript">
-      const goPost = (idx) => {
-        window.location.href = "post/" + idx;
-      };
 
-      const goPostUser = (idx) => {
-        window.location.href = "post/user/" + idx;
-      };
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    div {
+      margin: 3px;
+      border: 0px;
+      padding: 0px;
+      border-style: solid;
+    }
 
-      const goPostWrite = () => {
-        window.location.href = "post-write";
-      };
-    </script>
-  </head>
-  <body>
-    <div layout:fragment="content">
-      <button th:if="${session.dto != null}" onclick="goPostWrite()">
-        글쓰기
-      </button>
+    .main {
+      padding: 7px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+    }
+
+    #postlist {
+      border: 3px;
+      border-style: solid;
+      border-color: black;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 1fr 5fr 3fr 1fr;
+    }
+
+    .header-element {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 1fr 5fr 3fr 1fr;
+    }
+
+    .table-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .writebutton {
+      margin: 10px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  </style>
+  <title>Document</title>
+  <script th:inline="javascript">
+    const goPost = (idx) => {
+      window.location.href = "post/" + idx;
+    };
+
+    const goPostUser = (idx) => {
+      window.location.href = "post/user/" + idx;
+    };
+
+    const goPostWrite = () => {
+      window.location.href = "post-write";
+    };
+  </script>
+</head>
+
+<body>
+  <div class="main" layout:fragment="content">
+    <div>
       <h1>게시판</h1>
-      <table border="1">
-        <th>게시글 번호</th>
-        <th>게시글 제목</th>
-        <th>글 쓴 시간</th>
-        <th>글쓴이</th>
-        <tr th:each="postList : ${dto.mainPostDTOList}">
-          <td th:onclick="goPost([[${postList.idx}]])">
+      <div class="writebutton">
+        <button th:if="${session.dto != null}" onclick="goPostWrite()">
+          글쓰기
+        </button>
+      </div>
+      <div id="postlist">
+        <div class="table-header">
+          <div class="header-element">게시 번호</div>
+          <div class="header-element">게시글 제목</div>
+          <div class="header-element">글 쓴 시간</div>
+          <div class="header-element">글쓴이</div>
+        </div>
+
+        <div th:each="postList : ${dto.mainPostDTOList}" class="table-row">
+          <div th:onclick="goPost([[${postList.idx}]])" class="table-cell">
             <span th:text="${postList.idx}"></span>
-          </td>
-          <td th:onclick="goPost([[${postList.idx}]])">
+          </div>
+          <div th:onclick="goPost([[${postList.idx}]])" class="post-title">
             <span th:text="${postList.title}"></span>
-          </td>
-          <td th:onclick="goPost([[${postList.idx}]])">
+          </div>
+          <div th:onclick="goPost([[${postList.idx}]])" class="table-cell">
             <span th:text="${postList.createDate}"></span>
-          </td>
-          <td th:onclick="goPostUser([[${postList.userIdx}]])">
+          </div>
+          <div th:onclick="goPostUser([[${postList.userIdx}]])" class="table-cell">
             <span th:text="${postList.userId}"></span>
-          </td>
-        </tr>
-      </table>
+          </div>
+        </div>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

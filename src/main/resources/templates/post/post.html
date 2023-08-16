@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       div {
-        margin: 5px;
+        margin: 3px;
         border: 0px;
         padding: 0px;
         border-style: solid;
@@ -24,17 +24,17 @@
       }
 
       #post {
-        margin: 5px;
+        margin: 20px;
         border: 3px;
-        padding: 5px;
+        padding: 10px;
         border-style: solid;
         border-color: black;
       }
 
-      #commentContent {
-        margin: 5px;
+      #comment {
+        margin: 20px;
         border: 3px;
-        padding: 5px;
+        padding: 10px;
         border-style: solid;
         border-color: black;
       }
@@ -42,6 +42,28 @@
       .postbutton {
         display: flex;
         justify-content: flex-end;
+        align-items: center;
+      }
+
+      .commentcontent {
+        border: 3px;
+        border-style: solid;
+        border-color: black;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .commentbuttontime {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .commentinput {
+        margin: 10px;
+        gap: 10px;
+        display: flex;
         align-items: center;
       }
     </style>
@@ -216,7 +238,7 @@
           </div>
         </div>
         <div>
-          <span th:text="${dto.reqPostDTO.content}">내용</span>
+          <span id="postcontent" th:text="${dto.reqPostDTO.content}">내용</span>
         </div>
 
         <div class="postbutton">
@@ -247,7 +269,7 @@
       <div id="comment">
         <div>
           <h2>덧글</h2>
-          <div>
+          <div class="commentinput">
             <textarea
               th:if="${session.dto != null}"
               id="commentInput"
@@ -261,39 +283,41 @@
             </button>
           </div>
         </div>
-        <table border="0">
-          <th>아이디</th>
-          <th>내용</th>
-          <th>글 쓴 시간</th>
-
-          <tr th:each="commentDTO : ${dto.reqPostDTO.resCommentDTOList}">
-            <td th:text="${commentDTO.userId}">글쓴이</td>
-            <td th:text="${commentDTO.content}">내용</td>
-            <td th:text="${commentDTO.createDate}">글 쓴 시간</td>
-
-            <td
-              th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}"
+        <div class="commentcontent" th:each="commentDTO : ${dto.reqPostDTO.resCommentDTOList}">
+          <div >
+            <span class="commentuser" th:text="${commentDTO.userId}">글쓴이</span>
+            <span> : </span>
+            <span th:text="${commentDTO.content}">내용</span>
+          </div>
+          
+          <div class="commentbuttontime">
+            <div>
+              <span th:text="${commentDTO.createDate}">글 쓴 시간</span>
+            </div>
+            
+            <div
+            th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
             >
-              <button th:onclick="adminCommentDelete([[${commentDTO.idx}]])">
-                관리자 삭제
-              </button>
-            </td>
-            <td
-              th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
-            >
-              <button th:onclick="updateComment([[${commentDTO.idx}]])">
-                수정
-              </button>
-            </td>
-            <td
-              th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
-            >
-              <button th:onclick="deleteComment([[${commentDTO.idx}]])">
-                삭제
-              </button>
-            </td>
-          </tr>
-        </table>
+            <button th:onclick="updateComment([[${commentDTO.idx}]])">
+              수정
+            </button>
+          </div>
+          
+          <div
+          th:if="${session != null and session.dto != null and commentDTO.userIdx == session.dto.user.idx}"
+          >
+          <button th:onclick="deleteComment([[${commentDTO.idx}]])">
+            삭제
+          </button>
+        </div>
+        <div
+          th:if="${session != null and session.dto != null and session.dto.user != null and session.dto.user.roleList != null and session.dto.user.roleList.contains('ADMIN')}">
+          <button th:onclick="adminCommentDelete([[${commentDTO.idx}]])">
+            관리자 삭제
+          </button>
+        </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

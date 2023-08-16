@@ -3,6 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+
+      .postinput {
+        gap: 10px;
+        display: flex;
+        align-items: center;
+        
+      }
+
+    </style>
     <title>Document</title>
     <script>
       const checkInput = () => {
@@ -52,8 +62,8 @@
   <body>
     <div layout:fragment="content">
       <h1>게시글 쓰기</h1>
-      <div>제목 <input type="text" name="title" id="title" /></div>
-      <div>내용 <textarea name="content" id="content"></textarea></div>
+      <div class="postinput">제목 <input type="text" name="title" id="title" /></div>
+      <div class="postinput">내용 <textarea name="content" id="content"></textarea></div>
       <div><button onclick="reqPost()">글쓰기</button></div>
     </div>
 

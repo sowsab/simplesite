@@ -3,9 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      
+      div {
+        margin: 3px;
+        border: 0px;
+        padding: 0px;
+        border-style: solid;
+      }
+
+      .userlist {
+        border: 3px;
+        padding: 10px;
+        border-style: solid;
+      }
+
+      .table-header {
+        gap: 5px;
+        display: grid;
+        grid-template-columns: 1fr 4fr 1fr;
+      }
+
+      .table-row {
+        gap: 5px;
+        display: grid;
+        grid-template-columns: 1fr 4fr 1fr;
+      }
+  
+      .table-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+
+    </style>
     <title>Document</title>
     <script>
-      const goUserDetail = (idx) => {
+      const goAdminUserDetail = (idx) => {
         window.location.href = "/auth/user/admin/user/" + idx;
       };
     </script>
@@ -14,21 +49,29 @@
     <div layout:fragment="content">
       <h1>관리자 페이지</h1>
       <h2>유저 리스트</h2>
-      <table border="1">
-        <th>유저 번호</th>
-        <th>유저 아이디</th>
-        <th>어드민</th>
-        <tr
-          th:onclick="goUserDetail([[${userList.idx}]])"
+      <div class="userlist">
+        <div class="table-header">
+          <div class="table-cell">유저 번호</div>
+          <div class="table-cell">유저 아이디</div>
+          <div class="table-cell">어드민</div>
+        </div>
+      
+        <div
+          th:onclick="goAdminUserDetail([[${userList.idx}]])"
           th:each="userList : ${dto.userList}"
+          class="table-row"
         >
-          <td><span th:text="${userList.idx}">1</span></td>
-          <td>
+          <div class="table-cell">
+            <span th:text="${userList.idx}">1</span>
+          </div>
+          <div class="table-cell">
             <span th:text="${userList.id}">admin</span>
-          </td>
-          <td><span th:if="${userList.roleList.contains('ADMIN')}">O</span></td>
-        </tr>
-      </table>
+          </div>
+          <div class="table-cell">
+            <span th:if="${userList.roleList.contains('ADMIN')}">O</span>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
