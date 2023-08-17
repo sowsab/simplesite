@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import com.example.simple.common.dto.LoginDTO;
 import com.example.simple.common.exception.CustomNotFoundException;
 import com.example.simple.common.exception.UnauthorizedException;
-import com.example.simple.domain.main.dto.MainPostDTO;
-import com.example.simple.domain.main.dto.ReqGetCommentUpdateDTO;
-import com.example.simple.domain.main.dto.ReqGetPostUpdateDTO;
-import com.example.simple.domain.main.dto.ReqPostDTO;
 import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO;
 import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.dto.ResPostUserDTO;
+import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO.ReqGetCommentUpdateDTO;
+import com.example.simple.domain.main.dto.ResGetPostUpdateDTO.ReqGetPostUpdateDTO;
+import com.example.simple.domain.main.dto.ResMainPostDTO.MainPostDTO;
+import com.example.simple.domain.main.dto.ResPostDTO.ReqPostDTO;
 import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
@@ -182,11 +182,11 @@ public class MainService {
 
     public ResPostUserDTO getPostUser(Long userIdx) {
         List<PostEntity> postEntityList = postRepository.findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(userIdx);
-        
+
         Optional<UserEntity> userEntityOptional = userRepository.findByIdx(userIdx);
-        
+
         UserEntity userEntity = userEntityOptional.get();
-        
+
         ResPostUserDTO dto = ResPostUserDTO.convert(userEntity, postEntityList);
 
         return dto;

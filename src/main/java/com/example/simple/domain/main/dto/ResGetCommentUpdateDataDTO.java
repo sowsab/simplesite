@@ -10,7 +10,18 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class ResGetCommentUpdateDataDTO {
-    
+
     private ReqGetCommentUpdateDTO reqGetCommentUpdateDTO;
 
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Builder
+    public static class ReqGetCommentUpdateDTO {
+
+        private Long idx;
+        private String content;
+        private Long postIdx;
+
+    }
 }
