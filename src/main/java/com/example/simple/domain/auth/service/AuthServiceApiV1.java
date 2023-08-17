@@ -56,9 +56,9 @@ public class AuthServiceApiV1 {
         public ResponseEntity<ResponseDTO<?>> join(ReqJoinDTO dto) {
 
                 // if (dto.getUser().getEmail() == "" || dto.getUser().getEmail() == null ||
-                //                 dto.getUser().getId() == "" || dto.getUser().getId() == null ||
-                //                 dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
-                //         throw new BadRequestException("회원정보를 확인해주세요");
+                // dto.getUser().getId() == "" || dto.getUser().getId() == null ||
+                // dto.getUser().getPassword() == "" || dto.getUser().getPassword() == null) {
+                // throw new BadRequestException("회원정보를 확인해주세요");
                 // }
 
                 if (!dto.getUser().getPassword().equals(dto.getUser().getCheckpw())) {
@@ -114,7 +114,7 @@ public class AuthServiceApiV1 {
                 }
 
                 if (!dto.getUser().getCheckpw().equals(loginDTO.getUser().getPassword())) {
-                        throw new BadRequestException("비밀번호를 확인해주세요");
+                        throw new BadRequestException("확인용 비밀번호를 확인해주세요");
                 }
 
                 if (!dto.getUser().getId().equals(loginDTO.getUser().getId())) {
@@ -133,14 +133,18 @@ public class AuthServiceApiV1 {
                         }
                 }
 
-                UserEntity userEntity = UserEntity.builder()
-                                .idx(loginDTO.getUser().getIdx())
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                UserEntity userEntity = userEntityOptional.get();
+
+                UserEntity updateUserEntity = UserEntity.builder()
+                                .idx(userEntity.getIdx())
                                 .id(dto.getUser().getId())
                                 .email(dto.getUser().getEmail())
                                 .password(dto.getUser().getPassword())
                                 .build();
 
-                userRepository.save(userEntity);
+                userRepository.save(updateUserEntity);
 
                 session.invalidate();
 
