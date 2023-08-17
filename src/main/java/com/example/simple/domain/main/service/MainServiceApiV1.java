@@ -199,6 +199,11 @@ public class MainServiceApiV1 {
                 }
 
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
+
+                if (!commentEntityOptional.isPresent()) {
+                        throw new CustomNotFoundException("존재하지 않는 덧글 입니다");
+                }
+
                 CommentEntity commentEntity = commentEntityOptional.get();
 
                 if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
