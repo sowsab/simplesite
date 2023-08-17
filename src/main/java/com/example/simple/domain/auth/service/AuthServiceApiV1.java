@@ -113,29 +113,29 @@ public class AuthServiceApiV1 {
                         throw new UnauthorizedException("로그인 하지 않았습니다");
                 }
 
-                if (!dto.getUser().getCheckpw().equals(loginDTO.getUser().getPassword())) {
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                UserEntity userEntity = userEntityOptional.get();
+                
+                if (!dto.getUser().getCheckpw().equals(userEntity.getPassword())) {
                         throw new BadRequestException("확인용 비밀번호를 확인해주세요");
                 }
 
-                if (!dto.getUser().getId().equals(loginDTO.getUser().getId())) {
-                        Optional<UserEntity> userEntityOptional = userRepository.findById(dto.getUser().getId());
+                if (!dto.getUser().getId().equals(userEntity.getId())) {
+                        Optional<UserEntity> userEntityOptionalCheck = userRepository.findById(dto.getUser().getId());
 
-                        if (userEntityOptional.isPresent()) {
+                        if (userEntityOptionalCheck.isPresent()) {
                                 throw new BadRequestException("아이디가 중복 되었습니다");
                         }
                 }
 
-                if (!dto.getUser().getEmail().equals(loginDTO.getUser().getEmail())) {
-                        Optional<UserEntity> userEntityOptional = userRepository.findByEmail(dto.getUser().getEmail());
+                if (!dto.getUser().getEmail().equals(userEntity.getEmail())) {
+                        Optional<UserEntity> userEntityOptionalCheck = userRepository.findByEmail(dto.getUser().getEmail());
 
-                        if (userEntityOptional.isPresent()) {
+                        if (userEntityOptionalCheck.isPresent()) {
                                 throw new BadRequestException("이메일이 중복 되었습니다");
                         }
                 }
-
-                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
-
-                UserEntity userEntity = userEntityOptional.get();
 
                 UserEntity updateUserEntity = UserEntity.builder()
                                 .idx(userEntity.getIdx())
