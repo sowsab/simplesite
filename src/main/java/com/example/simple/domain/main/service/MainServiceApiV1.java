@@ -230,6 +230,10 @@ public class MainServiceApiV1 {
 
                 Optional<PostEntity> postEntityOptional = postRepository
                                 .findByIdxAndDeleteDateIsNull(dto.getPost().getIdx());
+                
+                if (!postEntityOptional.isPresent()) {
+                        throw new CustomNotFoundException("존재하지 않는 게시글 입니다");
+                }
 
                 PostEntity postEntity = postEntityOptional.get();
 
@@ -259,6 +263,10 @@ public class MainServiceApiV1 {
                 }
 
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
+
+                if (!commentEntityOptional.isPresent()) {
+                        throw new CustomNotFoundException("존재하지 않는 댓글 입니다");
+                }
 
                 CommentEntity commentEntity = commentEntityOptional.get();
 
