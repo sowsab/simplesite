@@ -53,7 +53,7 @@ public class MainServiceApiV1 {
 
                 Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
 
-                if (userEntityOptional.isPresent()) {
+                if (!userEntityOptional.isPresent()) {
                         throw new UnauthorizedException("존재하지 않은 유저입니다");
                 }
 
@@ -138,7 +138,7 @@ public class MainServiceApiV1 {
 
                 Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
 
-                if (userEntityOptional.isPresent()) {
+                if (!userEntityOptional.isPresent()) {
                         throw new UnauthorizedException("존재하지 않은 유저입니다");
                 }
 
@@ -179,7 +179,7 @@ public class MainServiceApiV1 {
 
                 Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
 
-                if (userEntityOptional.isPresent()) {
+                if (!userEntityOptional.isPresent()) {
                         throw new UnauthorizedException("존재하지 않은 유저입니다");
                 }
 
