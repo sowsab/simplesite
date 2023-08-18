@@ -19,6 +19,12 @@ public class ResPostDTO {
 
     private ReqPostDTO reqPostDTO;
 
+    public static ResPostDTO convert(PostEntity postEntity, List<CommentEntity> commentEntityList) {
+        return ResPostDTO.builder()
+                .reqPostDTO(ReqPostDTO.convert(postEntity, commentEntityList))
+                .build();
+    }
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter

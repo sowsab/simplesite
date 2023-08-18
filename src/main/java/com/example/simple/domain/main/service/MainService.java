@@ -12,10 +12,6 @@ import com.example.simple.domain.main.dto.ResGetPostUpdateDTO;
 import com.example.simple.domain.main.dto.ResMainPostDTO;
 import com.example.simple.domain.main.dto.ResPostDTO;
 import com.example.simple.domain.main.dto.ResPostUserDTO;
-import com.example.simple.domain.main.dto.ResGetCommentUpdateDataDTO.ReqGetCommentUpdateDTO;
-import com.example.simple.domain.main.dto.ResGetPostUpdateDTO.ReqGetPostUpdateDTO;
-import com.example.simple.domain.main.dto.ResMainPostDTO.MainPostDTO;
-import com.example.simple.domain.main.dto.ResPostDTO.ReqPostDTO;
 import com.example.simple.model.comment.entity.CommentEntity;
 import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
@@ -54,17 +50,7 @@ public class MainService {
         // postEntity.getUserEntity().getId()))
         // .toList();
 
-        List<MainPostDTO> mainPostDTOList = postEntityList.stream()
-                .map(postEntity -> MainPostDTO.builder()
-                        .idx(postEntity.getIdx())
-                        .title(postEntity.getTitle())
-                        .createDate(postEntity.getCreateDate())
-                        .userIdx(postEntity.getUserEntity().getIdx())
-                        .userId(postEntity.getUserEntity().getId())
-                        .build())
-                .toList();
-
-        return new ResMainPostDTO(mainPostDTOList);
+        return ResMainPostDTO.convert(postEntityList);
 
     }
 
@@ -104,9 +90,7 @@ public class MainService {
         // postEntityOptional.get().getUpdateDate(),
         // postEntityOptional.get().getCreateDate(), resCommentDTOList);
 
-        ReqPostDTO reqPostDTO = ReqPostDTO.convert(postEntity, commentEntityList);
-
-        return new ResPostDTO(reqPostDTO);
+        return ResPostDTO.convert(postEntity, commentEntityList);
 
     }
 
@@ -135,14 +119,7 @@ public class MainService {
         // ReqGetPostUpdateDTO(postEntity.getIdx(), postEntity.getTitle(),
         // postEntity.getContent(), postEntity.getIdx());
 
-        ReqGetPostUpdateDTO reqGetPostUpdateData = ReqGetPostUpdateDTO.builder()
-                .idx(postEntity.getIdx())
-                .title(postEntity.getTitle())
-                .content(postEntity.getContent())
-                .userIdx(postEntity.getUserEntity().getIdx())
-                .build();
-
-        return new ResGetPostUpdateDTO(reqGetPostUpdateData);
+        return ResGetPostUpdateDTO.convert(postEntity);
 
     }
 
@@ -170,13 +147,7 @@ public class MainService {
         // ReqGetCommentUpdateDTO(commentEntity.getIdx(),
         // commentEntity.getContent(), commentEntity.getPostEntity().getIdx());
 
-        ReqGetCommentUpdateDTO reqGetCommentUpdateDTO = ReqGetCommentUpdateDTO.builder()
-                .idx(commentEntity.getIdx())
-                .content(commentEntity.getContent())
-                .postIdx(commentEntity.getPostEntity().getIdx())
-                .build();
-
-        return new ResGetCommentUpdateDataDTO(reqGetCommentUpdateDTO);
+        return ResGetCommentUpdateDataDTO.convert(commentEntity);
 
     }
 

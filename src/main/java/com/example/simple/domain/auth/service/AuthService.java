@@ -37,12 +37,7 @@ public class AuthService {
 
                 UserEntity userEntity = userEntityOptional.get();
 
-                ReqGetUpdateDataDTO reqGetUpdateDataDTO = ReqGetUpdateDataDTO.builder()
-                                .id(userEntity.getId())
-                                .email(userEntity.getEmail())
-                                .build();
-
-                return new ResGetUpdateDTO(reqGetUpdateDataDTO);
+                return new ResGetUpdateDTO(ReqGetUpdateDataDTO.convert(userEntity));
 
         }
 
