@@ -24,6 +24,7 @@ import com.example.simple.model.comment.repository.CommentRepository;
 import com.example.simple.model.post.entity.PostEntity;
 import com.example.simple.model.post.repository.PostRepository;
 import com.example.simple.model.user.entity.UserEntity;
+import com.example.simple.model.user.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainServiceApiV1 {
 
+        private final UserRepository userRepository;
         private final PostRepository postRepository;
         private final CommentRepository commentRepository;
 
@@ -39,15 +41,27 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 하지 않았습니다");
+                }
+
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
 
                 if (!commentEntityOptional.isPresent()) {
                         throw new CustomNotFoundException("존재하지 않는 댓글입니다");
                 }
 
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                if (userEntityOptional.isPresent()) {
+                        throw new UnauthorizedException("존재하지 않은 유저입니다");
+                }
+
+                UserEntity userEntity = userEntityOptional.get();
+
                 CommentEntity commentEntity = commentEntityOptional.get();
 
-                if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
+                if (!commentEntity.getUserEntity().getIdx().equals(userEntity.getIdx())) {
                         throw new UnauthorizedException("댓글을 쓴 사람이 아닙니다");
                 }
 
@@ -79,6 +93,18 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 해주세요");
+                }
+
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                if (!userEntityOptional.isPresent()) {
+                        throw new UnauthorizedException("존재하지 않은 유저입니다");
+                }
+
+                UserEntity userEntity = userEntityOptional.get();
+
                 CommentEntity commentEntity = CommentEntity.builder()
                                 .content(dto.getComment().getContent())
                                 .postEntity(PostEntity
@@ -87,7 +113,7 @@ public class MainServiceApiV1 {
                                                 .build())
                                 .userEntity(UserEntity
                                                 .builder()
-                                                .idx(loginDTO.getUser().getIdx())
+                                                .idx(userEntity.getIdx())
                                                 .build())
                                 .createDate(LocalDateTime.now())
                                 .build();
@@ -106,11 +132,23 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 해주세요");
+                }
+
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                if (userEntityOptional.isPresent()) {
+                        throw new UnauthorizedException("존재하지 않은 유저입니다");
+                }
+
+                UserEntity userEntity = userEntityOptional.get();
+
                 PostEntity postEntity = PostEntity.builder()
                                 .title(dto.getPost().getTitle())
                                 .content(dto.getPost().getContent())
                                 .userEntity(UserEntity.builder()
-                                                .idx(loginDTO.getUser().getIdx())
+                                                .idx(userEntity.getIdx())
                                                 .build())
                                 .createDate(LocalDateTime.now())
                                 .build();
@@ -135,9 +173,21 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 하지 않았습니다");
+                }
+
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                if (userEntityOptional.isPresent()) {
+                        throw new UnauthorizedException("존재하지 않은 유저입니다");
+                }
+
+                UserEntity userEntity = userEntityOptional.get();
+
                 PostEntity postEntity = postEntityOptional.get();
 
-                if (!loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
+                if (!userEntity.getIdx().equals(postEntity.getUserEntity().getIdx())) {
                         throw new UnauthorizedException("작성자가 아닙니다");
                 }
 
@@ -172,8 +222,19 @@ public class MainServiceApiV1 {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
-                if (loginDTO == null || loginDTO.getUser() == null
-                                || !loginDTO.getUser().getIdx().equals(postEntity.getUserEntity().getIdx())) {
+                if (loginDTO == null) {
+                        throw new UnauthorizedException("로그인을 해주세요");
+                }
+
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                if (!userEntityOptional.isPresent()) {
+                        throw new UnauthorizedException("존재하지 않은 유저입니다");
+                }
+
+                UserEntity userEntity = userEntityOptional.get();
+
+                if (!userEntity.getIdx().equals(postEntity.getUserEntity().getIdx())) {
                         throw new UnauthorizedException("이 글을 쓴 사람이 아닙니다");
                 }
 
@@ -198,6 +259,14 @@ public class MainServiceApiV1 {
                         throw new UnauthorizedException("로그인을 하지 않았습니다");
                 }
 
+                Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
+
+                if (!userEntityOptional.isPresent()) {
+                        throw new UnauthorizedException("존재하지 않은 유저입니다");
+                }
+
+                UserEntity userEntity = userEntityOptional.get();
+
                 Optional<CommentEntity> commentEntityOptional = commentRepository.findByIdx(dto.getComment().getIdx());
 
                 if (!commentEntityOptional.isPresent()) {
@@ -206,7 +275,7 @@ public class MainServiceApiV1 {
 
                 CommentEntity commentEntity = commentEntityOptional.get();
 
-                if (!commentEntity.getUserEntity().getIdx().equals(loginDTO.getUser().getIdx())) {
+                if (!commentEntity.getUserEntity().getIdx().equals(userEntity.getIdx())) {
                         throw new UnauthorizedException("이 댓글을 쓴 사람이 아닙니다");
                 }
                 commentEntity.setDeleteDate(LocalDateTime.now());
