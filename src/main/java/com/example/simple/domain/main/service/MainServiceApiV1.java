@@ -65,7 +65,7 @@ public class MainServiceApiV1 {
                         throw new UnauthorizedException("댓글을 쓴 사람이 아닙니다");
                 }
 
-                CommentEntity updateCommentEntity = CommentEntity.builder()
+                commentRepository.save(CommentEntity.builder()
                                 .idx(commentEntity.getIdx())
                                 .content(dto.getComment().getContent())
                                 .postEntity(PostEntity.builder()
@@ -76,9 +76,7 @@ public class MainServiceApiV1 {
                                                 .build())
                                 .createDate(commentEntity.getCreateDate())
                                 .updateDate(LocalDateTime.now())
-                                .build();
-
-                commentRepository.save(updateCommentEntity);
+                                .build());
 
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
@@ -105,7 +103,7 @@ public class MainServiceApiV1 {
 
                 UserEntity userEntity = userEntityOptional.get();
 
-                CommentEntity commentEntity = CommentEntity.builder()
+                commentRepository.save(CommentEntity.builder()
                                 .content(dto.getComment().getContent())
                                 .postEntity(PostEntity
                                                 .builder()
@@ -116,9 +114,7 @@ public class MainServiceApiV1 {
                                                 .idx(userEntity.getIdx())
                                                 .build())
                                 .createDate(LocalDateTime.now())
-                                .build();
-
-                commentRepository.save(commentEntity);
+                                .build());
 
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
@@ -144,16 +140,14 @@ public class MainServiceApiV1 {
 
                 UserEntity userEntity = userEntityOptional.get();
 
-                PostEntity postEntity = PostEntity.builder()
+                postRepository.save(PostEntity.builder()
                                 .title(dto.getPost().getTitle())
                                 .content(dto.getPost().getContent())
                                 .userEntity(UserEntity.builder()
                                                 .idx(userEntity.getIdx())
                                                 .build())
                                 .createDate(LocalDateTime.now())
-                                .build();
-
-                postRepository.save(postEntity);
+                                .build());
 
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
@@ -191,15 +185,13 @@ public class MainServiceApiV1 {
                         throw new UnauthorizedException("작성자가 아닙니다");
                 }
 
-                PostEntity updateEntity = PostEntity.builder()
+                postRepository.save(PostEntity.builder()
                                 .idx(postEntity.getIdx())
                                 .title(dto.getPost().getTitle())
                                 .content(dto.getPost().getContent())
                                 .createDate(postEntity.getCreateDate())
                                 .updateDate(LocalDateTime.now())
-                                .build();
-
-                postRepository.save(updateEntity);
+                                .build());
 
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
@@ -304,7 +296,7 @@ public class MainServiceApiV1 {
 
                 Optional<PostEntity> postEntityOptional = postRepository
                                 .findByIdxAndDeleteDateIsNull(dto.getPost().getIdx());
-                
+
                 if (!postEntityOptional.isPresent()) {
                         throw new CustomNotFoundException("존재하지 않는 게시글 입니다");
                 }

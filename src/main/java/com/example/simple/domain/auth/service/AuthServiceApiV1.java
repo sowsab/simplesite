@@ -77,25 +77,21 @@ public class AuthServiceApiV1 {
                         throw new BadRequestException("이미 존재하는 이메일 입니다");
                 }
 
-                UserEntity userEntity = UserEntity.builder()
+                userRepository.save(UserEntity.builder()
                                 .email(dto.getUser().getEmail())
                                 .id(dto.getUser().getId())
                                 .password(dto.getUser().getPassword())
-                                .build();
-
-                userRepository.save(userEntity);
+                                .build());
 
                 Optional<UserEntity> joinUserEntityOptional = userRepository.findById(dto.getUser().getId());
 
                 UserEntity joinUserEntity = joinUserEntityOptional.get();
 
-                UserRoleEntity userRoleEntity = UserRoleEntity.builder()
+                userRoleRepository.save(UserRoleEntity.builder()
                                 .userEntity(UserEntity.builder().idx(joinUserEntity.getIdx()).build())
                                 .role("USER")
                                 .createDate(LocalDateTime.now())
-                                .build();
-
-                userRoleRepository.save(userRoleEntity);
+                                .build());
 
                 return new ResponseEntity<>(
                                 ResponseDTO.builder()
@@ -116,7 +112,7 @@ public class AuthServiceApiV1 {
                 Optional<UserEntity> userEntityOptional = userRepository.findByIdx(loginDTO.getUser().getIdx());
 
                 UserEntity userEntity = userEntityOptional.get();
-                
+
                 if (!dto.getUser().getCheckpw().equals(userEntity.getPassword())) {
                         throw new BadRequestException("확인용 비밀번호를 확인해주세요");
                 }
@@ -130,21 +126,20 @@ public class AuthServiceApiV1 {
                 }
 
                 if (!dto.getUser().getEmail().equals(userEntity.getEmail())) {
-                        Optional<UserEntity> userEntityOptionalCheck = userRepository.findByEmail(dto.getUser().getEmail());
+                        Optional<UserEntity> userEntityOptionalCheck = userRepository
+                                        .findByEmail(dto.getUser().getEmail());
 
                         if (userEntityOptionalCheck.isPresent()) {
                                 throw new BadRequestException("이메일이 중복 되었습니다");
                         }
                 }
 
-                UserEntity updateUserEntity = UserEntity.builder()
+                userRepository.save(UserEntity.builder()
                                 .idx(userEntity.getIdx())
                                 .id(dto.getUser().getId())
                                 .email(dto.getUser().getEmail())
                                 .password(dto.getUser().getPassword())
-                                .build();
-
-                userRepository.save(updateUserEntity);
+                                .build());
 
                 session.invalidate();
 
