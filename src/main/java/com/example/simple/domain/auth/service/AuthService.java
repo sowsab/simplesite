@@ -37,8 +37,10 @@ public class AuthService {
 
                 UserEntity userEntity = userEntityOptional.get();
 
-                ReqGetUpdateDataDTO reqGetUpdateDataDTO = new ReqGetUpdateDataDTO(userEntity.getId(),
-                                userEntity.getEmail());
+                ReqGetUpdateDataDTO reqGetUpdateDataDTO = ReqGetUpdateDataDTO.builder()
+                                .id(userEntity.getId())
+                                .email(userEntity.getEmail())
+                                .build();
 
                 return new ResGetUpdateDTO(reqGetUpdateDataDTO);
 
@@ -48,7 +50,8 @@ public class AuthService {
 
                 LoginDTO loginDTO = (LoginDTO) session.getAttribute("dto");
 
-                List<PostEntity> postEntityList = postRepository.findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(loginDTO.getUser().getIdx());
+                List<PostEntity> postEntityList = postRepository
+                                .findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(loginDTO.getUser().getIdx());
 
                 List<CommentEntity> commentEntityList = commentRepository
                                 .findByUserEntity_IdxAndDeleteDateIsNullOrderByIdxDesc(loginDTO.getUser().getIdx());
@@ -90,7 +93,8 @@ public class AuthService {
 
                 UserEntity userEntity = userEntityOptional.get();
 
-                ResAdminGetUserDetailDTO dto = ResAdminGetUserDetailDTO.convert(postEntityList, commentEntityList, userEntity);
+                ResAdminGetUserDetailDTO dto = ResAdminGetUserDetailDTO.convert(postEntityList, commentEntityList,
+                                userEntity);
 
                 return dto;
         }
